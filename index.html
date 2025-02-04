@@ -689,6 +689,68 @@
   <script>
     // Script section to load models into a JS Var
     var defs = {}
+            defs["DataUnit"] = {
+  "type" : "object",
+  "properties" : {
+    "temperature" : {
+      "type" : "string",
+      "example" : "C"
+    },
+    "pressure" : {
+      "type" : "string",
+      "example" : "hP"
+    },
+    "humidity" : {
+      "type" : "string",
+      "example" : "%"
+    },
+    "lux" : {
+      "type" : "string",
+      "example" : "Lux"
+    },
+    "wind_heading" : {
+      "type" : "string",
+      "example" : "°"
+    },
+    "wind_speed_avg" : {
+      "type" : "string",
+      "example" : "km/h"
+    },
+    "lat" : {
+      "type" : "string",
+      "example" : "DD"
+    },
+    "lon" : {
+      "type" : "string",
+      "example" : "DD"
+    }
+  }
+};
+            defs["DataUnitSample"] = {
+  "type" : "object",
+  "properties" : {
+    "temperature" : {
+      "type" : "string",
+      "example" : "C"
+    },
+    "pressure" : {
+      "type" : "string",
+      "example" : "hP"
+    },
+    "humidity" : {
+      "type" : "string",
+      "example" : "%"
+    },
+    "lat" : {
+      "type" : "string",
+      "example" : "DD"
+    },
+    "lon" : {
+      "type" : "string",
+      "example" : "DD"
+    }
+  }
+};
             defs["Datalive"] = {
   "type" : "object",
   "properties" : {
@@ -805,6 +867,9 @@
       "format" : "int64",
       "example" : 27
     },
+    "unit" : {
+      "$ref" : "#/components/schemas/DataUnit"
+    },
     "data" : {
       "$ref" : "#/components/schemas/Datalive"
     }
@@ -818,6 +883,9 @@
       "format" : "int64",
       "example" : 27
     },
+    "unit" : {
+      "$ref" : "#/components/schemas/DataUnitSample"
+    },
     "data" : {
       "$ref" : "#/components/schemas/Datalivesensor"
     }
@@ -830,6 +898,9 @@
       "type" : "integer",
       "format" : "int64",
       "example" : 27
+    },
+    "unit" : {
+      "$ref" : "#/components/schemas/DataUnit"
     },
     "2025-02-04T08:23:54.313Z" : {
       "$ref" : "#/components/schemas/Datalive"
@@ -846,6 +917,9 @@
       "type" : "integer",
       "format" : "int64",
       "example" : 27
+    },
+    "unit" : {
+      "$ref" : "#/components/schemas/DataUnitSample"
     },
     "2025-02-04T08:23:54.313Z" : {
       "$ref" : "#/components/schemas/Datalivesensor"

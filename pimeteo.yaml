@@ -248,9 +248,59 @@ components:
           type: integer
           format: int64
           example: 027
+        unit:
+          $ref: '#/components/schemas/DataUnit'
         data:
           $ref: '#/components/schemas/Datalive'
+
     
+    DataUnit:
+      type: object
+      properties:
+        temperature:
+          type: string
+          example: "C"
+        pressure:
+          type: string
+          example: "hP"
+        humidity:
+          type: string
+          example: "%"
+        lux:
+          type: string
+          example: "Lux"
+        wind_heading:
+          type: string
+          example: "°"
+        wind_speed_avg:
+          type: string
+          example: "km/h"
+        lat:
+          type: string
+          example: "DD"
+        lon:
+          type: string
+          example: "DD"
+          
+    DataUnitSample:
+      type: object
+      properties:
+        temperature:
+          type: string
+          example: "C"
+        pressure:
+          type: string
+          example: "hP"
+        humidity:
+          type: string
+          example: "%"
+        lat:
+          type: string
+          example: "DD"
+        lon:
+          type: string
+          example: "DD"
+        
     Datalive:
       type: object
       properties:
@@ -302,6 +352,8 @@ components:
           type: integer
           format: int64
           example: 027
+        unit:
+          $ref: '#/components/schemas/DataUnitSample'
         data:
           $ref: '#/components/schemas/Datalivesensor'
     
@@ -340,6 +392,8 @@ components:
           type: integer
           format: int64
           example: 027
+        unit:
+          $ref: '#/components/schemas/DataUnit'
         2025-02-04T08:23:54.313Z:
           $ref: '#/components/schemas/Datalive'
         2025-03-04T08:23:54.313Z:
@@ -352,6 +406,8 @@ components:
           type: integer
           format: int64
           example: 027
+        unit:
+          $ref: '#/components/schemas/DataUnitSample'
         2025-02-04T08:23:54.313Z:
           $ref: '#/components/schemas/Datalivesensor'
         2025-03-04T08:23:54.313Z:
