@@ -269,7 +269,7 @@ components:
         rain:
           type: string
           example: "mm/m2"
-        lux:
+        luminosity:
           type: string
           example: "Lux"
         wind_heading:
@@ -323,7 +323,7 @@ components:
           type: number
           format: int64
           example: 50.1
-        lux:
+        luminosity:
           type: number
           format: int64
           example: 7.0

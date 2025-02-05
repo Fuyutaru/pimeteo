@@ -31,7 +31,10 @@ const gps_watcher = chokidar.watch('/dev/shm/gpsNmea', {
 });
 
 function addData(){
-  const token = 'wn_EZ-uLnCtL68y6T-d8pshTw-S7bAa7mNnyAWIkvWT8OgEIuegAS5xGSKakJbjLEmsVGzrY0wxUFWdbB4lzMA==';
+  // raspi
+  // const token = 'wn_EZ-uLnCtL68y6T-d8pshTw-S7bAa7mNnyAWIkvWT8OgEIuegAS5xGSKakJbjLEmsVGzrY0wxUFWdbB4lzMA==';
+  // zijian
+  const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
   const url = 'http://localhost:8086'
 
   const client = new InfluxDB({url, token})
@@ -84,7 +87,9 @@ watcher.on('change', ()=>{
         try {
           const jsonData = JSON.parse(data);
           jsonData.measure.forEach(element => {
-            temp_data[element["name"]] = element["value"];
+            if (element["name"] != "temperature" || element["name"] != "pressure"){
+              temp_data[element["name"]] = element["value"];
+            }
           });
 
 
@@ -194,13 +199,13 @@ rain_watcher.on('change', ()=>{
   
     try {
       console.log(data);
-      if (!("pluv" in temp_data)){
-        temp_data["pluv"] = 0.328;
+      if (!("rain" in temp_data)){
+        temp_data["rain"] = 0.328;
         rain_value = data;
       }
       else{
         if(rain_value != data){
-          temp_data["pluv"] += 0.328;
+          temp_data["rain"] += 0.328;
           rain_value = data;
         }
       }
