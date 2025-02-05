@@ -38,6 +38,8 @@ router.get('/', async function(req, res, next) {
 
     try {
         let results = [];
+        a = queryClient.collectLines(fluxQuery)
+        console.log(a)
 
         // Execute the query
         for await (const { values, table } of queryClient.iterateRows(fluxQuery)) {
