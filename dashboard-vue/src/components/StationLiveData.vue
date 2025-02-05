@@ -14,7 +14,7 @@ export default {
   
   methods: {
     hello(){
-        console.log(this.dataLive.data.date);
+        console.log(this.dataLive.data);
     },
     read(){
 
@@ -25,7 +25,7 @@ export default {
 
 
 <template>
-    <select class="form-select form-select-lg mb-3" aria-label="Large select example" v-model="selected">
+    <select class="form-select form-select-lg mb-3" aria-label="Large select example" v-model="selected" @click="hello">
         <option disabled value="">Please select a station</option>
         <option>piensg027</option>
         <option>piensg028</option>
