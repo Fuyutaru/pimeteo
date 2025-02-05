@@ -266,6 +266,9 @@ components:
         humidity:
           type: string
           example: "%"
+        rain:
+          type: string
+          example: "mm/m2"
         lux:
           type: string
           example: "Lux"
@@ -332,7 +335,7 @@ components:
           type: integer
           format: int64
           example: 70
-        hygro:
+        rain:
           type: number
           format: int64
           example: 14.131
