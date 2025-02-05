@@ -1,4 +1,5 @@
-import chokidar from 'chokidar';
+// import chokidar from 'chokidar';
+const chokidar = require('chokidar');
 import fs from 'fs';
 import {InfluxDB, Point} from '@influxdata/influxdb-client';
 // import nmea from 'node-nmea';
