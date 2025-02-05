@@ -4,4 +4,4 @@ Description=meteodata
 [Service]
 WorkingDirectory=/home/pi/meteodata/meteoApp/
 ExecStartPre=/usr/bin/npm install
-ExecStart=/usr/bin/npm run start
+ExecStart=/usr/bin/npm run watch
