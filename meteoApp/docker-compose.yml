@@ -12,5 +12,5 @@ services:
       DOCKER_INFLUXDB_INIT_ORG: ign
       DOCKER_INFLUXDB_INIT_BUCKET: meteo
     volumes:
-    - "$PWD/data:/var/lib/influxdb2"
-    - "$PWD/config:/etc/influxdb2"
+    - "/home/pi/influxdb/data:/var/lib/influxdb2"
+    - "/home/pi/influxdb/config:/etc/influxdb2"
