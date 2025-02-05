@@ -27,7 +27,7 @@ const gps_watcher = chokidar.watch('/dev/shm/gpsNmea', {
 });
 
 function addData(){
-  const token = 'Byq6-sNdEOsj6q-KA8GXj1F3iB6qHcKMnuVa3Vy4fBTwf-LjtzQU0-IQkGCAdbvXTplpaGgq14o5kB7kjbrCCg==';
+  const token = 'wn_EZ-uLnCtL68y6T-d8pshTw-S7bAa7mNnyAWIkvWT8OgEIuegAS5xGSKakJbjLEmsVGzrY0wxUFWdbB4lzMA==';
   const url = 'http://localhost:8086'
 
   const client = new InfluxDB({url, token})
