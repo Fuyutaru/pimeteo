@@ -6,9 +6,11 @@ let bucket = `meteo`
 const {InfluxDB, Point} = require('@influxdata/influxdb-client')
 
 // raspi
-const token = 'wn_EZ-uLnCtL68y6T-d8pshTw-S7bAa7mNnyAWIkvWT8OgEIuegAS5xGSKakJbjLEmsVGzrY0wxUFWdbB4lzMA==';
+// const token = 'wn_EZ-uLnCtL68y6T-d8pshTw-S7bAa7mNnyAWIkvWT8OgEIuegAS5xGSKakJbjLEmsVGzrY0wxUFWdbB4lzMA==';
 // zijian
 // const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
+// z remote
+const token = 's076x-F1ekJrKhXBBujoQe27pY11lrQ1s8No3-mKceTYg9ZBla1qY4UU0tkx85G57aHk7iZbSOfJq0yYicNgew==';
 const url = 'http://localhost:8086'
 
 const client = new InfluxDB({url, token})
@@ -29,6 +31,7 @@ router.get('/', async function(req, res, next) {
         // Execute the query
         for await (const { values, table } of queryClient.iterateRows(fluxQuery)) {
             results.push(values);
+            console.log("values", values)
         }
 
 
@@ -96,6 +99,7 @@ router.get('/:list_capteur', async function(req, res, next) {
     let results = [];
     for await (const { values, table } of queryClient.iterateRows(fluxQuery)) {
         results.push(values);
+        console.log("values", values)
     }
 
     // Initialize the formatted result
