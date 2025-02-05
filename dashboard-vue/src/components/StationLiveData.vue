@@ -37,7 +37,7 @@ export default {
 
     <ul class="list-group m-3 p-3">
         <li class="list-group-item">ID station : {{dataLive.id}}</li>
-        <li class="list-group-item">Date : {{dataLive.data}}</li>
+        <li class="list-group-item">Date : {{dataLive.data?.date}}</li>
         <li class="list-group-item">A third item</li>
         <li class="list-group-item">A fourth item</li>
         <li class="list-group-item">And a fifth one</li>
