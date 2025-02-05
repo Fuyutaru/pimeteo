@@ -6,7 +6,6 @@
     "start": "node ./bin/www",
     "watch": "nodemon",
     "populate": "nodemon script.js"
-
   },
   "dependencies": {
     "@influxdata/influxdb-client": "^1.35.0",
@@ -16,6 +15,8 @@
     "express": "^4.21.2",
     "http-errors": "~1.6.3",
     "morgan": "~1.9.1",
+    "nmea-simple": "^3.3.0",
+    "node-nmea": "^2.0.0",
     "pug": "^3.0.3"
   },
   "devDependencies": {
