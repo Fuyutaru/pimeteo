@@ -14,7 +14,7 @@
     </nav>
 </template>
 
-<style>
+<style scoped>
 nav {
     background: lightsteelblue;
     display: flex;
