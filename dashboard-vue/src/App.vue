@@ -1,16 +1,12 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router';
-import FormSensor from './components/FormSensor.vue';
-import HeaderApp from './components/HeaderApp.vue';
-import Map from './components/Map.vue';
-import SelectStation from './components/SelectStation.vue';
-import LiveData from './components/LiveData.vue';
+import StationLiveData from './components/StationLiveData.vue';
 </script>
 
 <template>
   <!-- <HeaderApp />
   <FormSensor /> -->
-  <LiveData />
+  <StationLiveData />
   <!-- <div>
     <Map />
   </div> -->
