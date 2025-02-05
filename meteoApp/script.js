@@ -179,17 +179,6 @@ tpg_watcher.on('change', ()=>{
 
 rain_watcher.on('change', ()=>{
 
-  // const token = process.env.INFLUXDB_TOKEN
-  const token = 'Byq6-sNdEOsj6q-KA8GXj1F3iB6qHcKMnuVa3Vy4fBTwf-LjtzQU0-IQkGCAdbvXTplpaGgq14o5kB7kjbrCCg==';
-  const url = 'http://localhost:8086'
-
-  const client = new InfluxDB({url, token})
-
-  let org = `ign`
-  let bucket = `meteo`
-
-  let writeClient = client.getWriteApi(org, bucket, 'ns')
-
 
   fs.readFile('/dev/shm/rainCounter.log', 'utf8', (err, data) => {
     if (err) {
