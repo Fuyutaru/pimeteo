@@ -30,30 +30,31 @@ const gps_watcher = chokidar.watch('/dev/shm/gpsNmea', {
   persistent: true,
 });
 
-function addData(){
-  // raspi
-  // const token = 'wn_EZ-uLnCtL68y6T-d8pshTw-S7bAa7mNnyAWIkvWT8OgEIuegAS5xGSKakJbjLEmsVGzrY0wxUFWdbB4lzMA==';
-  // zijian
-  const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
-  const url = 'http://localhost:8086'
+function addData() {
+  if (!(temp_data.length === 0)) {
+    const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
+    const url = 'http://localhost:8086';
 
-  const client = new InfluxDB({url, token})
+    const client = new InfluxDB({ url, token });
 
-  let org = `ign`
-  let bucket = `meteo`
+    let org = `ign`;
+    let bucket = `meteo`;
 
-  let writeClient = client.getWriteApi(org, bucket, 'ns')
+    let writeClient = client.getWriteApi(org, bucket, 'ns');
 
-  for (const [key, value] of Object.entries(temp_data)){
-    const point = new Point(key)
-      .floatField('value', value)
+    for (const [key, value] of Object.entries(temp_data)) {
+      const point = new Point(key).floatField('value', value);
+      writeClient.writePoint(point);
+      console.log(`Writing point: ${key} = ${value}`);
+    }
 
-    writeClient.writePoint(point)
-    writeClient.flush()
+    writeClient.flush().then(() => {
+      console.log('Data flushed successfully');
+    }).catch(err => {
+      console.error('Error flushing data:', err);
+    });
   }
-
   setTimeout(addData, interval);
-
 }
 
 
