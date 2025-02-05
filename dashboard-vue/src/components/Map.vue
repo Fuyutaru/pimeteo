@@ -8,9 +8,9 @@ export default {
     mounted(){
         var map = new maplibregl.Map({
         container: 'map',
-        style: 'https://demotiles.maplibre.org/style.json', // stylesheet location
-        center: [-74.5, 40], // starting position [lng, lat]
-        zoom: 9 // starting zoom
+        style: 'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
+        center: [2, 48], // starting position [lng, lat]
+        zoom: 2 // starting zoom
         });
     }
 }
