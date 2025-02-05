@@ -3,7 +3,7 @@ export default {
   data() {
     return {
       selected: '',
-      dataLive: {}
+      dataLive: {},
     }
   },
   mounted(){
@@ -17,6 +17,9 @@ export default {
         console.log(this.dataLive.data);
     },
     read(){
+      //const month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+      const date = new Date(this.dataLive.data.date);
+      console.log(date.getDate());
 
     }
 }
@@ -25,7 +28,7 @@ export default {
 
 
 <template>
-    <select class="form-select form-select-lg mb-3" aria-label="Large select example" v-model="selected" @click="hello">
+    <select class="form-select form-select-lg mb-3" aria-label="Large select example" v-model="selected" @click="read">
         <option disabled value="">Please select a station</option>
         <option>piensg027</option>
         <option>piensg028</option>
@@ -38,8 +41,8 @@ export default {
     <ul class="list-group m-3 p-3">
         <li class="list-group-item">ID station : {{dataLive.id}}</li>
         <li class="list-group-item">Date : {{dataLive.data?.date}}</li>
-        <li class="list-group-item">A third item</li>
-        <li class="list-group-item">A fourth item</li>
+        <li class="list-group-item">Temperature : {{dataLive.data?.temperature}}</li>
+        <li class="list-group-item">{{dataLive.data?.date}}</li>
         <li class="list-group-item">And a fifth one</li>
     </ul>
 </template>
