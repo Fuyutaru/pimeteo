@@ -1,4 +1,5 @@
 <script>
+
 export default {
   data() {
     return {
@@ -10,11 +11,9 @@ export default {
         console.log("hello")
     },
     read(){
-
-        fetch("./assets/quiz.json")
+        fetch("./quiz.json")
         .then(response => response.json())
         .then(json => console.log(json));
-
         }
     }
 }
@@ -23,6 +22,8 @@ export default {
 </script>
 
 <template>
+    <!-- <h1>Comment récupérer une data qui est dans un autre component</h1>
+    <h1>Comment load un json local file</h1> -->
     <ul class="list-group">
         <li class="list-group-item" @click="read">An item</li>
         <li class="list-group-item">A second item</li>
