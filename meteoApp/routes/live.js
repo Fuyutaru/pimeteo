@@ -63,6 +63,10 @@ router.get('/', async function(req, res, next) {
         // console.log("All Data:", results);
     } catch (error) {
         console.error("Error fetching data:", error);
+        let e = {
+          "message": "The requested station is not in the database"
+        }
+        res.json(e);
     }
 
 
