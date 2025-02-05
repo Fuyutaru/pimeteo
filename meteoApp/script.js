@@ -32,7 +32,10 @@ const gps_watcher = chokidar.watch('/dev/shm/gpsNmea', {
 
 function addData() {
   if (!(temp_data.length === 0)) {
-    const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
+    // raspi
+    const token = 'wn_EZ-uLnCtL68y6T-d8pshTw-S7bAa7mNnyAWIkvWT8OgEIuegAS5xGSKakJbjLEmsVGzrY0wxUFWdbB4lzMA==';
+    // zijian
+    // const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
     const url = 'http://localhost:8086';
 
     const client = new InfluxDB({ url, token });
@@ -64,19 +67,6 @@ function addData() {
 
 watcher.on('change', ()=>{
 
-    // const token = process.env.INFLUXDB_TOKEN
-    const token = 'Byq6-sNdEOsj6q-KA8GXj1F3iB6qHcKMnuVa3Vy4fBTwf-LjtzQU0-IQkGCAdbvXTplpaGgq14o5kB7kjbrCCg==';
-    const url = 'http://localhost:8086'
-
-    const client = new InfluxDB({url, token})
-
-    let org = `ign`
-    let bucket = `meteo`
-
-    let writeClient = client.getWriteApi(org, bucket, 'ns')
-
-
-
     fs.readFile('/dev/shm/sensors', (err, data) => {
         if (err) {
           console.error('Problème de lecture:', err);
@@ -92,27 +82,6 @@ watcher.on('change', ()=>{
               temp_data[element["name"]] = element["value"];
             }
           });
-
-
-
-          // const jsonData = JSON.parse(data);
-          // console.log(jsonData.measure[1]["value"]);
-
-          // jsonData.measure.forEach(element => {
-          //   const point = new Point(element["name"])
-          //     .floatField('value', element["value"])
-
-
-
-          // void setTimeout(() => {
-          //   writeClient.writePoint(point)
-          // }, 1000) // separate points by 1 second
-
-          // void setTimeout(() => {
-          //   writeClient.flush()
-          // }, 5000)
-          // });
-
         
           }
        
@@ -126,18 +95,6 @@ watcher.on('change', ()=>{
 
 
 tpg_watcher.on('change', ()=>{
-
-  // const token = process.env.INFLUXDB_TOKEN
-  const token = 'Byq6-sNdEOsj6q-KA8GXj1F3iB6qHcKMnuVa3Vy4fBTwf-LjtzQU0-IQkGCAdbvXTplpaGgq14o5kB7kjbrCCg==';
-  const url = 'http://localhost:8086'
-
-  const client = new InfluxDB({url, token})
-
-  let org = `ign`
-  let bucket = `meteo`
-
-  let writeClient = client.getWriteApi(org, bucket, 'ns')
-
 
   fs.readFile('/dev/shm/tpg.log', (err, data) => {
     if (err) {
