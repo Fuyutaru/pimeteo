@@ -1,9 +1,12 @@
 // import chokidar from 'chokidar';
 const chokidar = require('chokidar');
-import fs from 'fs';
-import {InfluxDB, Point} from '@influxdata/influxdb-client';
+// import fs from 'fs';
+const fs = require('fs');
+// import {InfluxDB, Point} from '@influxdata/influxdb-client';
+const {InfluxDB, Point} = require('@influxdata/influxdb-client');
 // import nmea from 'node-nmea';
-import nmea from 'nmea-simple'
+// import nmea from 'nmea-simple'
+const nmea = require('nmea-simple')
 
 let temp_data ={}
 
