@@ -18,7 +18,7 @@ const watcher = chokidar.watch('/dev/shm/sensors', {
   persistent: true,
 });
 
-const tpg_watcher = chokidar.watch('/dev/shm/tpg.log', {
+const tph_watcher = chokidar.watch('/dev/shm/tph.log', {
   persistent: true,
 });
 
@@ -95,9 +95,9 @@ watcher.on('change', () => {
 })
 
 
-tpg_watcher.on('change', () => {
+tph_watcher.on('change', () => {
 
-  fs.readFile('/dev/shm/tpg.log', (err, data) => {
+  fs.readFile('/dev/shm/tph.log', (err, data) => {
     if (err) {
       console.error('Problème de lecture:', err);
       return;
