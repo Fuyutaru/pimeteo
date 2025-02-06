@@ -5,7 +5,9 @@ let org = `ign`
 let bucket = `meteo`
 const { InfluxDB, Point } = require('@influxdata/influxdb-client')
 
-const token = process.env.INFLUXDB_TOKEN
+// raspi
+const token = 'F8bh5nAMrb7zo43oTtPIvZxES2EtdceLvJ4lWld4k9Se10047DgpMitlNhEw2PkHtkjjDLxY-MVrhsTpK5jLDA==';
+// const token = process.env.INFLUXDB_TOKEN
 console.log("token", token)
 // zijian
 // const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
