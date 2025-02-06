@@ -33,7 +33,10 @@ const gps_watcher = chokidar.watch('/dev/shm/gpsNmea', {
 function addData() {
   if (!(temp_data.length === 0)) {
     // raspi
-    // const token = 'wn_EZ-uLnCtL68y6T-d8pshTw-S7bAa7mNnyAWIkvWT8OgEIuegAS5xGSKakJbjLEmsVGzrY0wxUFWdbB4lzMA==';
+
+    const token = 'F8bh5nAMrb7zo43oTtPIvZxES2EtdceLvJ4lWld4k9Se10047DgpMitlNhEw2PkHtkjjDLxY-MVrhsTpK5jLDA==';
+    // const token = process.env.INFLUXDB_TOKEN
+
     // zijian
     // const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
     // z remote
