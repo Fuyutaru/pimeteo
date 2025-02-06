@@ -9,8 +9,11 @@ const { InfluxDB, Point } = require('@influxdata/influxdb-client')
 const token = 'F8bh5nAMrb7zo43oTtPIvZxES2EtdceLvJ4lWld4k9Se10047DgpMitlNhEw2PkHtkjjDLxY-MVrhsTpK5jLDA==';
 // const token = process.env.INFLUXDB_TOKEN
 console.log("token", token)
+
 // zijian
 // const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
+// z remote
+const token = 's076x-F1ekJrKhXBBujoQe27pY11lrQ1s8No3-mKceTYg9ZBla1qY4UU0tkx85G57aHk7iZbSOfJq0yYicNgew==';
 const url = 'http://localhost:8086'
 
 const client = new InfluxDB({ url, token })
@@ -24,6 +27,7 @@ router.get('/', async function (req, res, next) {
   let fluxQuery = `from(bucket: "meteo") 
     |> range(start: -1h) // Fetch last 1 hour (ensures we have recent data)
     |> last() // Get the most recent values for each field`
+
 
   try {
     let results = [];
@@ -98,7 +102,9 @@ router.get('/:list_capteur', async function (req, res, next) {
 
     let results = [];
     for await (const { values, table } of queryClient.iterateRows(fluxQuery)) {
+
       results.push(values);
+
     }
 
     // Initialize the formatted result

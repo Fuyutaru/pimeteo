@@ -33,10 +33,14 @@ const gps_watcher = chokidar.watch('/dev/shm/gpsNmea', {
 function addData() {
   if (!(temp_data.length === 0)) {
     // raspi
+
     const token = 'F8bh5nAMrb7zo43oTtPIvZxES2EtdceLvJ4lWld4k9Se10047DgpMitlNhEw2PkHtkjjDLxY-MVrhsTpK5jLDA==';
     // const token = process.env.INFLUXDB_TOKEN
+
     // zijian
     // const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
+    // z remote
+    const token = 's076x-F1ekJrKhXBBujoQe27pY11lrQ1s8No3-mKceTYg9ZBla1qY4UU0tkx85G57aHk7iZbSOfJq0yYicNgew==';
     const url = 'http://localhost:8086';
 
     const client = new InfluxDB({ url, token });
@@ -64,7 +68,7 @@ function addData() {
 
 
 
-// watcher.add(['/dev/shm/sensors', '/dev/shm/rainCounter.log', '/dev/shm/gpsNmea', '/dev/shm/tpg.log'])
+// watcher.add(['/dev/shm/sensors', '/dev/shm/rainCounter.log', '/dev/shm/gpsNmea', '/dev/shm/tph.log'])
 
 watcher.on('change', () => {
 
