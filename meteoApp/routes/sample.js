@@ -33,7 +33,7 @@ router.get('/:start/now', async (req, res) => {
     let fluxQuery = `from(bucket: "meteo")
         |> range(start: ${req.params.start}, stop: now())`;
 
-    if (!isValidDateFormat(startDate)) {
+    if (!isValidDateFormat(req.params.start)) {
         throw new Error('Invalid query argument');
     }
 
@@ -100,7 +100,7 @@ router.get('/:start/:stop', async (req, res) => {
     let fluxQuery = `from(bucket: "meteo")
         |> range(start: ${req.params.start}, stop: ${req.params.stop})`;
 
-    if (!isValidDateFormat(startDate)) {
+    if (!isValidDateFormat(req.params.start)) {
         throw new Error('Invalid query argument');
     }
 
