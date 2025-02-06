@@ -8,36 +8,35 @@ const { InfluxDB, Point } = require('@influxdata/influxdb-client')
 // raspi
 const token = 'F8bh5nAMrb7zo43oTtPIvZxES2EtdceLvJ4lWld4k9Se10047DgpMitlNhEw2PkHtkjjDLxY-MVrhsTpK5jLDA==';
 // const token = process.env.INFLUXDB_TOKEN
-console.log("token", token)
 
 // zijian
 // const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
 // z remote
-// const token = 's076x-F1ekJrKhXBBujoQe27pY11lrQ1s8No3-mKceTYg9ZBla1qY4UU0tkx85G57aHk7iZbSOfJq0yYicNgew==';
+// const token = '-RwrWLE9aurMT4_twlKp5XXb1xeWol_BC5gJMb9HgQLZqf8JdYUPYfOZJP0jnsZ1wBk5323FWVWXxtUCL6lrmA==';
 const url = 'http://localhost:8086'
 
 const client = new InfluxDB({ url, token })
 
+function truncateToSecond(timestamp) {
+  const date = new Date(timestamp);
+  date.setMilliseconds(0);
+  return date.toISOString();
+}
 
 
-/* GET home page. */
+
 router.get('/', async function (req, res, next) {
-  console.log("ouiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiiii")
   let queryClient = client.getQueryApi(org)
   let fluxQuery = `from(bucket: "meteo") 
     |> range(start: -1h) // Fetch last 1 hour (ensures we have recent data)
     |> last() // Get the most recent values for each field`
 
-
   try {
     let results = [];
 
-    // Execute the query
     for await (const { values, table } of queryClient.iterateRows(fluxQuery)) {
       results.push(values);
     }
-    console.log("results", results)
-
 
     const formattedResult = {
       id: 28,
@@ -53,7 +52,7 @@ router.get('/', async function (req, res, next) {
         lon: "DD"
       },
       data: {
-        date: results[0][2], // Adjust according to your data structure
+        date: truncateToSecond(results[0][4]),
         temperature: parseFloat(results.find(row => row[7] === "temp")[5]),
         pressure: parseFloat(results.find(row => row[7] === "press")[5]),
         humidity: parseFloat(results.find(row => row[7] === "humidity")[5]),
@@ -61,13 +60,12 @@ router.get('/', async function (req, res, next) {
         wind_heading: parseFloat(results.find(row => row[7] === "wind_heading")[5]),
         wind_speed_avg: parseFloat(results.find(row => row[7] === "wind_speed_avg")[5]),
         rain: parseFloat(results.find(row => row[7] === "rain")[5]),
-        lat: parseFloat(results.find(row => row[7] === "lat")[5]), // Static value as per your example
-        lon: parseFloat(results.find(row => row[7] === "lon")[5])  // Static value as per your example
+        lat: parseFloat(results.find(row => row[7] === "lat")[5]),
+        lon: parseFloat(results.find(row => row[7] === "lon")[5])
       }
     };
 
     res.json(formattedResult);
-    // console.log("All Data:", results);
   } catch (error) {
     console.error("Error fetching data:", error);
     let e = {
@@ -82,7 +80,6 @@ router.get('/', async function (req, res, next) {
 
 
 router.get('/:list_capteur', async function (req, res, next) {
-  // const listCapteur = req.params.list_capteur.split('-');
   let queryClient = client.getQueryApi(org);
   let fluxQuery = `from(bucket: "meteo") 
       |> range(start: -1h) // Fetch last 1 hour (ensures we have recent data)
@@ -93,7 +90,6 @@ router.get('/:list_capteur', async function (req, res, next) {
     const listCapteur = req.params.list_capteur.split('-');
     const validCapteurs = ['temperature', 'pressure', 'humidity', 'luminosity', 'wind_heading', 'wind_speed_avg', 'rain', 'lat', 'lon'];
 
-    // Validate the listCapteur
     for (const capteur of listCapteur) {
       if (!validCapteurs.includes(capteur)) {
         throw new Error('Invalid query argument');
@@ -107,16 +103,14 @@ router.get('/:list_capteur', async function (req, res, next) {
 
     }
 
-    // Initialize the formatted result
     const formattedResult = {
       id: 28,
       unit: {},
       data: {
-        date: results[0][2] // Adjust according to your data structure
+        date: truncateToSecond(results[0][4])
       }
     };
 
-    // Define the units for each possible field
     const units = {
       temperature: "C",
       pressure: "hP",
@@ -129,15 +123,12 @@ router.get('/:list_capteur', async function (req, res, next) {
       lon: "DD"
     };
 
-    // Add only the requested fields to the unit and data objects
     listCapteur.forEach(capteur => {
       if (units[capteur]) {
         formattedResult.unit[capteur] = units[capteur];
       }
-      console.log("capteur", capteur)
       switch (capteur) {
         case 'temperature':
-          console.log("temperature ouiiiiiiiiiiiii")
           formattedResult.data.temperature = parseFloat(results.find(row => row[7] === "temp")[5]);
           break;
         case 'pressure':
