@@ -1,11 +1,6 @@
-// import chokidar from 'chokidar';
 const chokidar = require('chokidar');
-// import fs from 'fs';
 const fs = require('fs');
-// import {InfluxDB, Point} from '@influxdata/influxdb-client';
 const { InfluxDB, Point } = require('@influxdata/influxdb-client');
-// import nmea from 'node-nmea';
-// import nmea from 'nmea-simple'
 const nmea = require('nmea-simple')
 
 let temp_data = {}
@@ -34,13 +29,13 @@ function addData() {
   if (!(temp_data.length === 0)) {
     // raspi
 
-    const token = 'F8bh5nAMrb7zo43oTtPIvZxES2EtdceLvJ4lWld4k9Se10047DgpMitlNhEw2PkHtkjjDLxY-MVrhsTpK5jLDA==';
+    // const token = 'F8bh5nAMrb7zo43oTtPIvZxES2EtdceLvJ4lWld4k9Se10047DgpMitlNhEw2PkHtkjjDLxY-MVrhsTpK5jLDA==';
     // const token = process.env.INFLUXDB_TOKEN
 
     // zijian
     // const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
     // z remote
-    // const token = 's076x-F1ekJrKhXBBujoQe27pY11lrQ1s8No3-mKceTYg9ZBla1qY4UU0tkx85G57aHk7iZbSOfJq0yYicNgew==';
+    const token = '-RwrWLE9aurMT4_twlKp5XXb1xeWol_BC5gJMb9HgQLZqf8JdYUPYfOZJP0jnsZ1wBk5323FWVWXxtUCL6lrmA==';
     const url = 'http://localhost:8086';
 
     const client = new InfluxDB({ url, token });
@@ -67,9 +62,6 @@ function addData() {
 
 
 
-
-// watcher.add(['/dev/shm/sensors', '/dev/shm/rainCounter.log', '/dev/shm/gpsNmea', '/dev/shm/tph.log'])
-
 watcher.on('change', () => {
 
   fs.readFile('/dev/shm/sensors', (err, data) => {
@@ -77,8 +69,6 @@ watcher.on('change', () => {
       console.error('Problème de lecture:', err);
       return;
     }
-
-
 
     try {
       const jsonData = JSON.parse(data);
@@ -109,23 +99,10 @@ tph_watcher.on('change', () => {
 
     try {
       const jsonData = JSON.parse(data);
-      console.log(jsonData);
 
       for (const [key, value] of Object.entries(jsonData)) {
         if (key != "date" || key != "hygro") {
           temp_data[key] = value;
-
-          // const point = new Point(key)
-          //   .floatField('value', value)
-
-
-          // void setTimeout(() => {
-          //   writeClient.writePoint(point)
-          // }, 1000) // separate points by 1 second
-
-          // void setTimeout(() => {
-          //   writeClient.flush()
-          // }, 5000)
 
         }
       }
@@ -150,7 +127,6 @@ rain_watcher.on('change', () => {
     }
 
     try {
-      console.log(data);
       if (!("rain" in temp_data)) {
         temp_data["rain"] = 0.328;
         rain_value = data;
@@ -162,7 +138,6 @@ rain_watcher.on('change', () => {
         }
       }
 
-      console.log(temp_data)
 
     }
 
@@ -188,17 +163,10 @@ gps_watcher.on('change', () => {
       const parsed = nmea.parseNmeaSentence(raw);
 
       if (parsed.latitude !== undefined && parsed.longitude !== undefined) {
-        console.log(`Latitude (DD): ${parsed.latitude.toFixed(3)}`);
-        console.log(`Longitude (DD): ${parsed.longitude.toFixed(3)}`);
         let lat = parsed.latitude.toFixed(3);
         let lon = parsed.longitude.toFixed(3);
-
         temp_data["lat"] = lat;
         temp_data["lon"] = lon;
-
-        console.log(temp_data)
-
-
       } else {
         console.log("No latitude/longitude in this sentence.");
       }
@@ -211,28 +179,5 @@ gps_watcher.on('change', () => {
 
 
 })
-
-
-// setTimeout(() => {
-//   if (!(Object.keys(temp_data).length === 0)){
-//     const token = 'Byq6-sNdEOsj6q-KA8GXj1F3iB6qHcKMnuVa3Vy4fBTwf-LjtzQU0-IQkGCAdbvXTplpaGgq14o5kB7kjbrCCg==';
-//     const url = 'http://localhost:8086'
-
-//     const client = new InfluxDB({url, token})
-
-//     let org = `ign`
-//     let bucket = `meteo`
-
-//     let writeClient = client.getWriteApi(org, bucket, 'ns')
-
-//     for (const [key, value] of Object.entries(temp_data)){
-//       const point = new Point(key)
-//         .floatField('value', value)
-
-//       writeClient.writePoint(point)
-//       writeClient.flush()
-//     }
-//   }
-// }, interval);
 
 addData();
