@@ -32,6 +32,7 @@ router.get('/', async function (req, res, next) {
     for await (const { values, table } of queryClient.iterateRows(fluxQuery)) {
       results.push(values);
     }
+    console.log("results", results)
 
 
     const formattedResult = {
