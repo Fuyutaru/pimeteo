@@ -19,7 +19,7 @@ function truncateToSecond(timestamp) {
     const date = new Date(timestamp);
     date.setMilliseconds(0);
     return date.toISOString();
-  }
+}
 
 /* GET home page. */
 router.get('/:start/now', async (req, res) => {
@@ -28,8 +28,8 @@ router.get('/:start/now', async (req, res) => {
     let fluxQuery = `from(bucket: "meteo")
         |> range(start: ${req.params.start}, stop: now())`;
 
-    
-    try{
+
+    try {
         let results = [];
         for await (const { values, table } of queryClient.iterateRows(fluxQuery)) {
 
@@ -51,11 +51,11 @@ router.get('/:start/now', async (req, res) => {
                 },
                 data: {}
             };
-        
+
             const validTypes = ['temp', 'press', 'humidity', 'luminosity', 'wind_heading', 'wind_speed_avg', 'rain', 'lat', 'lon'];
-        
+
             results.forEach(row => {
-                const [ , , , , times, value, , type] = row;
+                const [, , , , times, value, , type] = row;
                 const timestamp = truncateToSecond(times);
                 console.log(timestamp);
                 if (validTypes.includes(type)) {
@@ -67,7 +67,7 @@ router.get('/:start/now', async (req, res) => {
                     formattedData.data[timestamp][type] = parseFloat(value);
                 }
             });
-        
+
             return formattedData;
         };
 
@@ -84,6 +84,68 @@ router.get('/:start/now', async (req, res) => {
     }
 });
 
+
+router.get('/:start/:stop', async (req, res) => {
+    // chercher les données entre req.params.start et maintenant
+    let queryClient = client.getQueryApi(org);
+    let fluxQuery = `from(bucket: "meteo")
+        |> range(start: ${req.params.start}, stop: ${req.params.stop})`;
+
+
+    try {
+        let results = [];
+        for await (const { values, table } of queryClient.iterateRows(fluxQuery)) {
+
+            results.push(values);
+        }
+        const formatResults = (results) => {
+            const formattedData = {
+                id: 28,
+                unit: {
+                    temperature: "C",
+                    pressure: "hP",
+                    humidity: "%",
+                    rain: "mm/m2",
+                    luminosity: "Lux",
+                    wind_heading: "°",
+                    wind_speed_avg: "km/h",
+                    lat: "DD",
+                    lon: "DD"
+                },
+                data: {}
+            };
+
+            const validTypes = ['temp', 'press', 'humidity', 'luminosity', 'wind_heading', 'wind_speed_avg', 'rain', 'lat', 'lon'];
+
+            results.forEach(row => {
+                const [, , , , times, value, , type] = row;
+                const timestamp = truncateToSecond(times);
+                console.log(timestamp);
+                if (validTypes.includes(type)) {
+                    console.log("yessssss")
+                    if (!formattedData.data[timestamp]) {
+                        console.log("nooooooooo")
+                        formattedData.data[timestamp] = { date: timestamp };
+                    }
+                    formattedData.data[timestamp][type] = parseFloat(value);
+                }
+            });
+
+            return formattedData;
+        };
+
+        // res.json(results);
+        res.json(formatResults(results));
+
+    } catch (error) {
+        console.error("Error fetching data:", error);
+        if (error.message === 'Invalid query argument') {
+            res.status(400).json({ message: "A query argument is invalid" });
+        } else {
+            res.status(404).json({ message: "The requested station is not in the database" });
+        }
+    }
+});
 
 
 module.exports = router;
