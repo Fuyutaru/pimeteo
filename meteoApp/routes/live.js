@@ -6,6 +6,7 @@ let bucket = `meteo`
 const { InfluxDB, Point } = require('@influxdata/influxdb-client')
 
 const token = process.env.INFLUXDB_TOKEN
+console.log("token", token)
 // zijian
 // const token = 'sf70vN5suVwlorMq1IBkAmzMLb7Bu4OPOxT4oDFwVCw3GvgsTTrkQQ_SgjRMesQSIxBtqk5sFnf5e_jIdtp1Mg==';
 const url = 'http://localhost:8086'
