@@ -1,9 +1,12 @@
 <script>
 import MenuApp from '@/components/MenuApp.vue'
+import DataLive from '@/components/DataLive.vue'
+
 
 export default {
   components: {
     MenuApp,
+    DataLive,
   },
   data() {
     return {
@@ -21,11 +24,11 @@ export default {
 </script>
 
 <template>
-
   <div class="container">
     <MenuApp @update="maj_sensor" class="menu border-end"/>
-  </div>
+    <DataLive/>
 
+  </div>
 </template>
 
 <style scoped>
