@@ -64,6 +64,7 @@ router.get('/:start/now', async (req, res) => {
 
             results.forEach(row => {
                 const [, , , , times, value, , type] = row;
+                console.log("ouiiiiiiiiiiiiiiiiiiiiiiiii", type);
                 const timestamp = truncateToSecond(times);
                 // if (validTypes.includes(type)) {
                 //     if (!formattedData.data[timestamp]) {
@@ -75,7 +76,7 @@ router.get('/:start/now', async (req, res) => {
                     if (!formattedData.data[timestamp]) {
                         formattedData.data[timestamp] = { date: timestamp };
                     }
-                    console.log(type);
+
                     if (type != "date") {
                         formattedData.data[timestamp][type] = parseFloat(value);
                     }
