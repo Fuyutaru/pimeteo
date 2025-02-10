@@ -72,9 +72,10 @@ router.get('/:start/now', async (req, res) => {
                 //     formattedData.data[timestamp][type] = parseFloat(value);
                 // }
                 if (validTypes.includes(type)) {
-                    if (!formattedData.data[timestamp]) {
-                        // formattedData.data[timestamp] = { date: timestamp };
-                    }
+                    // if (!formattedData.data[timestamp]) {
+                    //     // formattedData.data[timestamp] = { date: timestamp };
+                    // }
+                    console.log(type);
                     if (type != "date") {
                         formattedData.data[timestamp][type] = parseFloat(value);
                     }
