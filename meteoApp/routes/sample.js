@@ -67,12 +67,6 @@ router.get('/:start/now', async (req, res) => {
             results.forEach(row => {
                 const [, , , , times, value, , type] = row;
                 const timestamp = truncateToSecond(times);
-                // if (validTypes.includes(type)) {
-                //     if (!formattedData.data[timestamp]) {
-                //         formattedData.data[timestamp] = { date: timestamp };
-                //     }
-                //     formattedData.data[timestamp][type] = parseFloat(value);
-                // }
                 if (validTypes.includes(type)) {
                     if (!formattedData.data[timestamp]) {
                         formattedData.data[timestamp] = {};
@@ -143,9 +137,13 @@ router.get('/:start/:stop', async (req, res) => {
                 const timestamp = truncateToSecond(times);
                 if (validTypes.includes(type)) {
                     if (!formattedData.data[timestamp]) {
-                        formattedData.data[timestamp] = { date: timestamp };
+                        formattedData.data[timestamp] = {};
                     }
-                    formattedData.data[timestamp][type] = parseFloat(value);
+
+
+                    if (type != "date") {
+                        formattedData.data[timestamp][type] = parseFloat(value);
+                    }
                 }
             });
 
@@ -216,7 +214,7 @@ router.get('/:start/now/:list_capteur', async function (req, res, next) {
             let date = row[4];
             date = truncateToSecond(date);
             if (!formattedResult[date]) {
-                formattedResult[date] = { date };
+                formattedResult[date] = {};
             }
             listCapteur.forEach(capteur => {
                 switch (capteur) {
