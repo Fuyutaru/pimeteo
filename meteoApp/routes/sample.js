@@ -79,7 +79,9 @@ router.get('/:start/now', async (req, res) => {
                     }
 
 
-                    formattedData.data[timestamp][type] = parseFloat(value);
+                    if (type != "date") {
+                        formattedData.data[timestamp][type] = parseFloat(value);
+                    }
 
 
                 }
