@@ -43,6 +43,8 @@ router.get('/:start/now', async (req, res) => {
 
             results.push(values);
         }
+
+        console.log(" ouiiiiiiiii", results);
         const formatResults = (results) => {
             const formattedData = {
                 id: 28,
@@ -64,7 +66,6 @@ router.get('/:start/now', async (req, res) => {
 
             results.forEach(row => {
                 const [, , , , times, value, , type] = row;
-                console.log("ouiiiiiiiiiiiiiiiiiiiiiiiii", type);
                 const timestamp = truncateToSecond(times);
                 // if (validTypes.includes(type)) {
                 //     if (!formattedData.data[timestamp]) {
