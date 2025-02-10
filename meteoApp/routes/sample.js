@@ -74,7 +74,16 @@ router.get('/:start/now', async (req, res) => {
 
 
                     if (type != "date") {
-                        formattedData.data[timestamp][type] = parseFloat(value);
+                        if (type === "temp") {
+                            formattedData.data[timestamp]["temperature"] = parseFloat(value);
+                        }
+                        else if (type === "press") {
+                            formattedData.data[timestamp]["pressure"] = parseFloat(value);
+                        }
+                        else {
+                            formattedData.data[timestamp][type] = parseFloat(value);
+                        }
+
                     }
 
 
@@ -142,7 +151,16 @@ router.get('/:start/:stop', async (req, res) => {
 
 
                     if (type != "date") {
-                        formattedData.data[timestamp][type] = parseFloat(value);
+                        if (type === "temp") {
+                            formattedData.data[timestamp]["temperature"] = parseFloat(value);
+                        }
+                        else if (type === "press") {
+                            formattedData.data[timestamp]["pressure"] = parseFloat(value);
+                        }
+                        else {
+                            formattedData.data[timestamp][type] = parseFloat(value);
+                        }
+
                     }
                 }
             });
