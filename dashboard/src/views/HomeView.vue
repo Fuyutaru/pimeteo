@@ -2,7 +2,6 @@
 import MenuApp from '@/components/MenuApp.vue'
 import DataLive from '@/components/DataLive.vue'
 
-
 export default {
   components: {
     MenuApp,
@@ -15,19 +14,17 @@ export default {
   },
   methods: {
     maj_sensor(newList) {
-      this.sensorList = newList;
-      console.log(this.sensorList);
+      this.sensorList = newList
+      console.log(this.sensorList)
     },
-  }
+  },
 }
-
 </script>
 
 <template>
   <div class="container">
-    <MenuApp @update="maj_sensor" class="menu border-end"/>
-    <DataLive/>
-
+    <MenuApp @update="maj_sensor" class="menu" />
+    <DataLive />
   </div>
 </template>
 

@@ -1,11 +1,13 @@
 <script>
-  import MapBox from  '@/components/MapBox.vue'
-  import DataHistory from '@/components/DataHistory.vue'
+  import MapBox from  './MapBox.vue'
+  import DataHistory from './DataHistory.vue'
+  import IconTooling from './icons/IconTooling.vue'
     
   export default {
     components: {
       MapBox,
-      DataHistory
+      DataHistory,
+      IconTooling
     },
     data() {
       return {
@@ -79,8 +81,30 @@
       <MapBox />
     </div>
 
-    <div class="histoBox">
-      <DataHistory />
+    <div class="sensorBox">
+      <div class="SensorItem">
+        <p>Salmon</p>
+      </div>
+      <div class="SensorItem">
+        <p>Salmon</p>
+      </div>
+      <div class="SensorItem">
+        <p>Salmon</p>
+      </div>
+    </div>
+
+
+    <div class="col d-flex align-items-start">
+      <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+        <p>hi</p>
+      </div>
+      <div>
+        <h3 class="fs-2 text-body-emphasis">Featured title</h3>
+        <p>Paragraph of text beneath the heading to explain the heading. We'll add onto it with another sentence and probably just keep going until we run out of words.</p>
+        <a href="#" class="btn btn-primary">
+          Primary button
+        </a>
+      </div>
     </div>
 
 
@@ -110,9 +134,29 @@
     grid-row: 1;
   }
 
-  .histoBox {
+  .sensorBox {
     grid-row: 2;
     grid-column: 1 / span 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+  }
+
+  .SensorItem {
+    width: 200px;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 224, 0.5);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
+  }
+
+  .icon-square {
+    width: 3rem;
+    height: 3rem;
+    border-radius: .75rem;
   }
 
 
