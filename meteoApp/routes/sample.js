@@ -65,11 +65,20 @@ router.get('/:start/now', async (req, res) => {
             results.forEach(row => {
                 const [, , , , times, value, , type] = row;
                 const timestamp = truncateToSecond(times);
+                // if (validTypes.includes(type)) {
+                //     if (!formattedData.data[timestamp]) {
+                //         formattedData.data[timestamp] = { date: timestamp };
+                //     }
+                //     formattedData.data[timestamp][type] = parseFloat(value);
+                // }
                 if (validTypes.includes(type)) {
                     if (!formattedData.data[timestamp]) {
                         formattedData.data[timestamp] = { date: timestamp };
                     }
-                    formattedData.data[timestamp][type] = parseFloat(value);
+                    if (type != "date") {
+                        formattedData.data[timestamp][type] = parseFloat(value);
+                    }
+
                 }
             });
 
