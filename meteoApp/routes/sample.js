@@ -333,7 +333,7 @@ router.get('/:start/:stop/:list_capteur', async function (req, res, next) {
             let date = row[4];
             date = truncateToSecond(date);
             if (!formattedResult[date]) {
-                formattedResult[date] = { date };
+                formattedResult[date] = {};
             }
             listCapteur.forEach(capteur => {
                 switch (capteur) {
