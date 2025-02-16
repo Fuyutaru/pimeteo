@@ -1,13 +1,13 @@
 <script>
 import HeaderApp from '@/components/HeaderApp.vue'
 import MenuApp from '@/components/MenuApp.vue'
-import DataLive from '@/components/DataLive.vue'
+import DataLiveBoard from '@/components/DataLiveBoard.vue'
 
 export default {
   components: {
     HeaderApp,
     MenuApp,
-    DataLive,
+    DataLiveBoard,
   },
   data() {
     return {
@@ -35,7 +35,7 @@ export default {
                 <MenuApp @update="maj_sensor" />
             </div>
             <div class="col-10">
-                <DataLive />
+              <DataLiveBoard :sensorList="sensorList" />
             </div>
         </div>
     </div>
