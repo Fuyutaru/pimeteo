@@ -1,7 +1,7 @@
 <template>
     <div class="SensorItem">
-        <div class="col d-flex align-items-start border-bottom border-dark-subtle mb-4">
-            <div class="icon-square text-body-emphasis bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
+        <div class="col d-flex align-items-start border border-dark-subtle mb-4">
+            <div class="icon-square bg-body-secondary d-inline-flex align-items-center justify-content-center fs-4 flex-shrink-0 me-3">
                 <img alt="Vue logo"  src="@/assets/temperature.png"/>
             </div>
             <div>
