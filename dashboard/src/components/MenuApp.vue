@@ -22,7 +22,7 @@ export default {
         <input
           class="form-check-input"
           type="checkbox"
-          value="temp"
+          value="Temperature"
           v-model="sensorList"
           @change="helloSensor"
         />

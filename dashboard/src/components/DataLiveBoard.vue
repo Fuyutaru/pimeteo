@@ -42,7 +42,7 @@
 <template>
   <div class="box">
 
-    <div class="dataBox">
+    <div class="infoBox">
       <InfoStation/>
     </div>
 
@@ -51,12 +51,11 @@
     </div>
 
     <div class="sensorBox">
-      <SensorItem />
-
       <div v-for="sensor in sensorList" :key="sensor">
-        {{ sensor }}
+        <SensorItem>
+        <template #title>{{ sensor }}</template>
+        </SensorItem>
       </div>
-
     </div>
 
   </div>
@@ -75,7 +74,7 @@
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
   }
 
-  .dataBox {
+  .infoBox {
     grid-column: 1;
     grid-row: 1;
   }
@@ -89,6 +88,7 @@
     grid-row: 2;
     grid-column: 1 / span 2;
     display: flex;
+    justify-content: space-around;
     flex-wrap: wrap;
     gap: 30px;
   }
