@@ -34,7 +34,6 @@ export default {
     hello() {
       console.log('hello')
     },
-    read() {},
   },
 }
 </script>
