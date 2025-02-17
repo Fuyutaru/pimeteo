@@ -24,8 +24,9 @@
     <div class="sensorBox">
       <div v-for="sensor in sensorList" :key="sensor">
         <SensorItem>
-        <template #title>{{ sensor.name }}</template>
-        <template #val>{{ sensor.val }}</template>
+          <template #icon> <img alt="Vue logo" class="icon-square" :src=sensor.url /> </template>
+          <template #title>{{ sensor.name }}</template>
+          <template #val>{{ sensor.val }}</template>
         </SensorItem>
       </div>
     </div>
@@ -73,5 +74,12 @@
     justify-content: center;
     gap: 30px;
   }
+
+  .icon-square {
+    width: 2rem;
+    height: 2rem;
+    border-radius: .75rem;
+    background-color: rgb(219 234 254);
+    }
 
 </style>
