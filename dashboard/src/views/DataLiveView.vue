@@ -12,12 +12,32 @@ export default {
   data() {
     return {
       sensorList: [],
+      dataLive: {},
+      sensorName: {"rain": "Precipitation", 
+                   "temperature": "Temperature", 
+                   "humidity": "Humidity",
+                   "pressure": "Pressure",
+                   "wind_speed_avg": "Wind Speed",
+                   "wind_heading": "Wind Direction",
+                   "luminosity": "Luminosity"
+                  },
     }
   },
+
+  mounted(){
+      fetch("./live.json")
+          .then(response => response.json())
+          .then(json => this.dataLive=json);
+  },
+
   methods: {
-    maj_sensor(newList) {
-      this.sensorList = newList
-      console.log(this.sensorList)
+    maj_sensor(sensorSelected) {
+      this.sensorList = sensorSelected.map(sensor => {
+        return {
+          name: this.sensorName[sensor],
+          val: `${this.dataLive.data[sensor]} ${this.dataLive.unit[sensor]}`
+        }
+      });
     },
   },
 }

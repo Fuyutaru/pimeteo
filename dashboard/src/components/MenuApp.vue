@@ -17,16 +17,16 @@ export default {
   <div class="container">
     <h2>Sensors</h2>
 
-    <div class="sensor mt-2">
+    <div class="mt-2">
       <div class="form-check">
         <input
           class="form-check-input"
           type="checkbox"
-          value="Temperature"
+          value="temperature"
           v-model="sensorList"
           @change="helloSensor"
         />
-        <label class="form-check-label" for="temp"> Temperature </label>
+        <label class="form-check-label" for="temperature"> Temperature </label>
       </div>
       <div class="form-check">
         <input
@@ -42,31 +42,31 @@ export default {
         <input
           class="form-check-input"
           type="checkbox"
-          value="hum"
+          value="humidity"
           v-model="sensorList"
           @change="helloSensor"
         />
-        <label class="form-check-label" for="hum"> Humidity </label>
+        <label class="form-check-label" for="humidity"> Humidity </label>
       </div>
       <div class="form-check">
         <input
           class="form-check-input"
           type="checkbox"
-          value="wind-speed"
+          value="wind_speed_avg"
           v-model="sensorList"
           @change="helloSensor"
         />
-        <label class="form-check-label" for="wind-speed"> Wind Speed </label>
+        <label class="form-check-label" for="wind_speed_avg"> Wind Speed </label>
       </div>
       <div class="form-check">
         <input
           class="form-check-input"
           type="checkbox"
-          value="wind-dir"
+          value="wind_heading"
           v-model="sensorList"
           @change="helloSensor"
         />
-        <label class="form-check-label" for="wind-dir"> Wind Direction </label>
+        <label class="form-check-label" for="wind_heading"> Wind Direction </label>
       </div>
       <div class="form-check">
         <input
@@ -82,11 +82,11 @@ export default {
         <input
           class="form-check-input"
           type="checkbox"
-          value="lum"
+          value="luminosity"
           v-model="sensorList"
           @change="helloSensor"
         />
-        <label class="form-check-label" for="lum"> Luminosity </label>
+        <label class="form-check-label" for="luminosity"> Luminosity </label>
       </div>
     </div>
 

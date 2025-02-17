@@ -9,38 +9,26 @@
       InfoStation,
       SensorItem,
     },
-
     props: {
       sensorList: {
         type: Array,
         required: true
       }
     },
-
-    data() {
-      return {
-          dataLive: {},
-      }
-    },
-    mounted(){
-      fetch("./live.json")
-          .then(response => response.json())
-          .then(json => this.dataLive=json);
-    },
-    
-    methods: {
-      hello(){
-          console.log(this.dataLive.data.date);
-      },
-      read(){
-
-      }
-    }
   }
 </script>
 
 <template>
   <div class="box">
+
+    <div class="sensorBox">
+      <div v-for="sensor in sensorList" :key="sensor">
+        <SensorItem>
+        <template #title>{{ sensor.name }}</template>
+        <template #val>{{ sensor.val }}</template>
+        </SensorItem>
+      </div>
+    </div>
 
     <div class="infoBox">
       <InfoStation/>
@@ -50,13 +38,6 @@
       <MapBox />
     </div>
 
-    <div class="sensorBox">
-      <div v-for="sensor in sensorList" :key="sensor">
-        <SensorItem>
-        <template #title>{{ sensor }}</template>
-        </SensorItem>
-      </div>
-    </div>
 
   </div>
     
@@ -65,7 +46,7 @@
 <style scoped>
   .box {
     display: grid;
-    grid-template-columns: 300px 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     background-color: #eee;
     padding: 30px;
@@ -76,20 +57,20 @@
 
   .infoBox {
     grid-column: 1;
-    grid-row: 1;
+    grid-row: 2;
   }
 
   .mapBox {
     grid-column: 2;
-    grid-row: 1;
+    grid-row: 2;
   }
 
   .sensorBox {
-    grid-row: 2;
+    grid-row: 1;
     grid-column: 1 / span 2;
     display: flex;
-    justify-content: space-around;
     flex-wrap: wrap;
+    justify-content: center;
     gap: 30px;
   }
 

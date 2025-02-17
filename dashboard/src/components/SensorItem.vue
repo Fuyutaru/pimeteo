@@ -11,33 +11,30 @@
             </div>
         </div>
         <div>
-            <p class="text-center">10 km/h</p>
+            <p class="text-center">
+                <slot name="val"></slot>
+            </p>
         </div>
-
     </div>
-
-        
 </template>
 
 <style scoped>
-
-.icon-square {
-width: 2rem;
-height: 2rem;
-border-radius: .75rem;
-background-color: rgb(219 234 254);
-}
-
-.SensorItem {
-    width: 250px;
-    height: 150px;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    padding: 15px;
+    .icon-square {
+    width: 2rem;
+    height: 2rem;
+    border-radius: .75rem;
     background-color: rgb(219 234 254);
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
-}
+    }
 
+    .SensorItem {
+        width: 275px;
+        height: 150px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        padding: 15px;
+        background-color: rgb(219 234 254);
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
 </style>
