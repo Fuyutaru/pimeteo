@@ -41,7 +41,7 @@ export default {
 <style scoped>
 #map {
   width: 100%;
-  height: 50%;
+  height: 75%;
   border-radius: 8px;
   box-shadow:
     0 2px 4px rgba(0, 0, 0, 0.25),
