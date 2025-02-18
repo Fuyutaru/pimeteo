@@ -89,7 +89,7 @@ export default {
       });
     },
     get_date() {
-      const timer = setInterval(() => {
+      setInterval(() => {
         const today = new Date();
         this.timestamp = today.toUTCString();
       }, 1_000);

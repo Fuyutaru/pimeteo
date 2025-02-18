@@ -1,12 +1,10 @@
 <script>
   import MapBox from './MapBox.vue'
-  import InfoStation from './InfoStation.vue'
   import SensorItem from './SensorItem.vue'
 
   export default {
     components: {
       MapBox,
-      InfoStation,
       SensorItem,
     },
     props: {
