@@ -90,8 +90,7 @@ export default {
     },
     get_date() {
       setInterval(() => {
-        const today = new Date();
-        this.timestamp = today.toUTCString();
+        this.timestamp = new Date().toISOString();
       }, 1_000);
     }
   },
