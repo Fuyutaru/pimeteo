@@ -43,6 +43,8 @@ router.get('/:start/now', async (req, res) => {
 
             results.push(values);
         }
+
+        console.log(" ouiiiiiiiii", results);
         const formatResults = (results) => {
             const formattedData = {
                 id: 28,
@@ -67,9 +69,24 @@ router.get('/:start/now', async (req, res) => {
                 const timestamp = truncateToSecond(times);
                 if (validTypes.includes(type)) {
                     if (!formattedData.data[timestamp]) {
-                        formattedData.data[timestamp] = { date: timestamp };
+                        formattedData.data[timestamp] = {};
                     }
-                    formattedData.data[timestamp][type] = parseFloat(value);
+
+
+                    if (type != "date") {
+                        if (type === "temp") {
+                            formattedData.data[timestamp]["temperature"] = parseFloat(value);
+                        }
+                        else if (type === "press") {
+                            formattedData.data[timestamp]["pressure"] = parseFloat(value);
+                        }
+                        else {
+                            formattedData.data[timestamp][type] = parseFloat(value);
+                        }
+
+                    }
+
+
                 }
             });
 
@@ -129,9 +146,22 @@ router.get('/:start/:stop', async (req, res) => {
                 const timestamp = truncateToSecond(times);
                 if (validTypes.includes(type)) {
                     if (!formattedData.data[timestamp]) {
-                        formattedData.data[timestamp] = { date: timestamp };
+                        formattedData.data[timestamp] = {};
                     }
-                    formattedData.data[timestamp][type] = parseFloat(value);
+
+
+                    if (type != "date") {
+                        if (type === "temp") {
+                            formattedData.data[timestamp]["temperature"] = parseFloat(value);
+                        }
+                        else if (type === "press") {
+                            formattedData.data[timestamp]["pressure"] = parseFloat(value);
+                        }
+                        else {
+                            formattedData.data[timestamp][type] = parseFloat(value);
+                        }
+
+                    }
                 }
             });
 
@@ -202,7 +232,7 @@ router.get('/:start/now/:list_capteur', async function (req, res, next) {
             let date = row[4];
             date = truncateToSecond(date);
             if (!formattedResult[date]) {
-                formattedResult[date] = { date };
+                formattedResult[date] = {};
             }
             listCapteur.forEach(capteur => {
                 switch (capteur) {
@@ -321,7 +351,7 @@ router.get('/:start/:stop/:list_capteur', async function (req, res, next) {
             let date = row[4];
             date = truncateToSecond(date);
             if (!formattedResult[date]) {
-                formattedResult[date] = { date };
+                formattedResult[date] = {};
             }
             listCapteur.forEach(capteur => {
                 switch (capteur) {
