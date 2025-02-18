@@ -347,6 +347,46 @@ components:
           type: number
           format: int64
           example: 2.20
+          
+    Datasample:
+      type: object
+      properties:
+        temperature:
+          type: number
+          format: int64
+          example: 6.4
+        pressure:
+          type: number
+          format: int64
+          example: 995.00
+        humidity:
+          type: number
+          format: int64
+          example: 50.1
+        luminosity:
+          type: number
+          format: int64
+          example: 7.0
+        wind_heading:
+          type: integer
+          format: int64
+          example: 90
+        wind_speed_avg:
+          type: integer
+          format: int64
+          example: 70
+        rain:
+          type: number
+          format: int64
+          example: 14.131
+        lat:
+          type: number
+          format: int64
+          example: 48.50
+        long:
+          type: number
+          format: int64
+          example: 2.20
     
     LiveSensor:
       type: object
@@ -386,6 +426,30 @@ components:
         long:
           type: number
           format: int64
+          example: 2.
+      
+    Datasamplesensor:
+      type: object
+      properties:
+        temperature:
+          type: number
+          format: int64
+          example: 6.4
+        pressure:
+          type: number
+          format: int64
+          example: 995.00
+        humidity:
+          type: number
+          format: int64
+          example: 50.1
+        lat:
+          type: number
+          format: int64
+          example: 48.50
+        long:
+          type: number
+          format: int64
           example: 2.20
           
     SampleStart:
@@ -397,10 +461,16 @@ components:
           example: 027
         unit:
           $ref: '#/components/schemas/DataUnit'
+        data:
+          $ref: '#/components/schemas/SampleData'
+          
+    SampleData:
+      type: object
+      properties:
         2025-02-04T08:23:54.313Z:
-          $ref: '#/components/schemas/Datalive'
+          $ref: '#/components/schemas/Datasample'
         2025-03-04T08:23:54.313Z:
-          $ref: '#/components/schemas/Datalive'
+          $ref: '#/components/schemas/Datasample'
           
     SampleStartSensor:
       type: object
@@ -411,10 +481,16 @@ components:
           example: 027
         unit:
           $ref: '#/components/schemas/DataUnitSample'
+        data:
+          $ref: '#/components/schemas/SampleDataSensor'
+          
+    SampleDataSensor:
+      type: object
+      properties:
         2025-02-04T08:23:54.313Z:
-          $ref: '#/components/schemas/Datalivesensor'
+          $ref: '#/components/schemas/Datasamplesensor'
         2025-03-04T08:23:54.313Z:
-          $ref: '#/components/schemas/Datalivesensor'
+          $ref: '#/components/schemas/Datasamplesensor'
           
     error400:
       type: object
