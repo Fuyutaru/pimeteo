@@ -11,14 +11,17 @@
       sensorList: {
         type: Array,
         required: true
-      }
+      },
+      location: {
+        type: Object,
+        required: true
+      },
     },
   }
 </script>
 
 <template>
   <div class="box">
-    
     <div class="sensorBox">
       
       <div v-for="sensor in sensorList" :key="sensor">
@@ -31,7 +34,7 @@
     </div>
 
     <div class="mapBox">
-      <MapBox />
+      <MapBox :location="location"/>
     </div>
 
 

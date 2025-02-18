@@ -11,7 +11,7 @@
               <MenuApp @update="maj_sensor" />
           </div>
           <div class="col-10">
-            <DataLiveBoard :sensorList="sensorList" />
+            <DataLiveBoard :sensorList="sensorList" :location="location"/>
           </div>
       </div>
   </div>
@@ -43,6 +43,7 @@ export default {
       sensorList: [],
       dataLive: {},
       timestamp: "",
+      location: {lon:2, lat:48},
       stationName: "Pi 28",
       sensorName: {"rain": "Precipitation", 
                    "temperature": "Temperature", 
@@ -60,13 +61,16 @@ export default {
                    "wind_heading": HeadIcon,
                    "luminosity": LumIcon
                   },
+      isLoading: true,
     }
   },
   mounted(){
     fetch("./live.json")
       .then(response => response.json())
-      .then(json => this.dataLive=json);
-
+      .then(json => {
+        this.dataLive=json;
+        this.location = {'lon': json.data.long, 'lat': json.data.lat};
+      });
     this.get_date();
   },
   watch: {

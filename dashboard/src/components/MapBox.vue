@@ -2,8 +2,8 @@
   <div id="map"></div>
   <p class="m-2 d-flex justify-content-center">
     Station Location :
-    <span class="badge text-bg-primary ms-3">lon : 2</span>
-    <span class="badge text-bg-primary ms-1">lat : 48</span>
+    <span class="badge text-bg-primary ms-3">lon : {{ location.lon }}</span>
+    <span class="badge text-bg-primary ms-1">lat : {{ location.lat }}</span>
   </p>
 </template>
 
@@ -12,13 +12,19 @@ import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 
 export default {
+  props: {
+    location: {
+        type: Object,
+        required: true
+      },
+  },
   data() {
     return {
       map: null,
     }
   },
   mounted() {
-    this.initializeMap()
+    this.initializeMap();
   },
   methods: {
     initializeMap() {
@@ -26,13 +32,13 @@ export default {
         container: 'map',
         style:
           'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
-        center: [2, 48],
-        zoom: 4,
+        center: [this.location.lon, this.location.lat],
+        zoom: 7,
         minZoom: 2,
-      })
-    },
-    hello() {
-      console.log('hello')
+      });
+      const marker = new maplibregl.Marker()
+        .setLngLat([this.location.lon, this.location.lat])
+        .addTo(this.map);
     },
   },
 }
