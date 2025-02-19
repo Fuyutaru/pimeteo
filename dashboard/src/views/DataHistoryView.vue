@@ -9,7 +9,13 @@
       <div class="row">
           <div class="col-2">
               <MenuApp @update="maj_sensor" />
-              <MenuDate/>
+              <div v-if="sensorList.length !== 0"><MenuDate/></div>
+              <div v-else>
+                <div class="alert alert-warning d-flex align-items-center mt-4" role="alert">
+                    Please select at least one sensor
+                </div>
+              </div>
+              
           </div>
           <div class="col-10">
             <DataLiveBoard :sensorList="sensorList" :location="location"/>

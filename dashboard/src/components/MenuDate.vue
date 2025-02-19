@@ -3,12 +3,17 @@ export default {
   data() {
     return {
       sensorList: [],
+      buttonTimerange: false,
+      time: "",
     }
   },
   methods: {
     helloSensor() {
       this.$emit('update', this.sensorList)
     },
+    toggleTimerange() {
+      this.buttonTimerange = !this.buttonTimerange;
+    }
   },
 }
 </script>
@@ -19,26 +24,51 @@ export default {
     <h2>History</h2>
 
     <div class="d-flex flex-column my-3">
-      <div class="d-flex flex-row justify-content-between mb-2">
-          <button type="button" class="btn btn-outline-info btn-sm">Last Hour</button>
-          <button type="button" class="btn btn-outline-info btn-sm">Last Day</button>
+
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="exampleRadios" id="hour" value="hour">
+        <label class="form-check-label" for="hour">
+          Last Hour
+        </label>
       </div>
-      <button type="button" class="btn btn-outline-info btn-sm mb-3">Last Week</button>
-      <button type="button" class="btn btn-outline-primary btn-sm">Choose time range</button>
+
+      <div class="form-check">
+        <input class="form-check-input" type="radio" name="exampleRadios" id="day" value="day">
+        <label class="form-check-label" for="day">
+          Last Day
+        </label>
+      </div>
+  
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="radio" name="exampleRadios" id="week" value="week">
+        <label class="form-check-label" for="week">
+          Last week
+        </label>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-sm" @click="toggleTimerange" :disabled="time.length !== 0">Choose time range</button>
+
+
     </div>
 
 
 
-    <span class="badge text-bg-primary mb-2">Start Date</span>
+    <div v-if="buttonTimerange">
+      <span class="badge text-bg-primary mb-2">Start Date</span>
 
-    <div class="input-group mb-3">
-        <input type="date" class="form-control" value="2017-06-01T08:30">
-    </div>
+      <div class="input-group mb-3">
+          <input type="date" class="form-control" value="2017-06-01T08:30">
+      </div>
 
-    <span class="badge text-bg-primary mb-2">Stop Date</span>
+      <span class="badge text-bg-primary mb-2">Stop Date</span>
 
-    <div class="input-group mb-3">
-        <input type="date" class="form-control" value="2017-06-01T08:30">
+      <div class="input-group mb-3">
+          <input type="date" class="form-control" value="2017-06-01T08:30">
+      </div>
+
+      <button type="button" class="btn btn-primary btn-sm">Submit</button>
+
+
     </div>
 
   </div>
