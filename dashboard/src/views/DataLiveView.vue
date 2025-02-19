@@ -17,7 +17,6 @@
   </div>
 </template>
 
-
 <script>
 import HeaderApp from '@/components/HeaderApp.vue'
 import MenuApp from '@/components/MenuApp.vue'
@@ -43,7 +42,7 @@ export default {
       sensorList: [],
       dataLive: {},
       timestamp: "",
-      location: {lon:2, lat:48},
+      location: {lon: 2, lat: 48},
       stationName: "Pi 28",
       sensorName: {"rain": "Precipitation", 
                    "temperature": "Temperature", 
@@ -79,7 +78,6 @@ export default {
       if (minute % 10 === 0){
         console.log(minute);
       }
-
     }
   },
   methods: {

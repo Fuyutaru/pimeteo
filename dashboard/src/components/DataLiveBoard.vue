@@ -26,7 +26,7 @@
       
       <div v-for="sensor in sensorList" :key="sensor">
         <SensorItem>
-          <template #icon> <img alt="Vue logo" class="icon-square" :src=sensor.url /> </template>
+          <template #icon> <img alt="icon" class="icon-square" :src=sensor.url /> </template>
           <template #title>{{ sensor.name }}</template>
           <template #val>{{ sensor.val }}</template>
         </SensorItem>
