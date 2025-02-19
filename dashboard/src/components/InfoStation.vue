@@ -1,8 +1,13 @@
 <template>
     <div class="card">
-        <div class="card-header"> Station {{ stationName }} | {{ infos[stationName] }}</div>
+        <div class="card-header"> 
+          <button type="button" class="btn btn-outline-danger btn-sm me-2" data-bs-toggle="button">
+            Data Live
+          </button>
+          Station {{ stationName }} | {{ infos[stationName] }}
+        </div>
         <div class="card-body">
-        <h5 class="card-title ">{{ readableTimestamp() }}</h5>
+        <h5>{{ readableTimestamp() }}</h5>
         </div>
     </div>
 </template>
