@@ -46,6 +46,7 @@
   .box {
     display: grid;
     grid-template-rows: 1fr 400px;
+    height: 100%;
     background-color: #eee;
     padding: 30px;
     gap: 50px;

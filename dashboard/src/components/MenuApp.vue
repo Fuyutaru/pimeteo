@@ -17,7 +17,7 @@ export default {
   <div class="container">
     <h2>Sensors</h2>
 
-    <div class="mt-2">
+    <div class="mt-3">
       <div class="form-check">
         <input
           class="form-check-input"
@@ -90,9 +90,9 @@ export default {
       </div>
     </div>
 
-    <button type="button" class="btn btn-outline-danger mt-4 mx-3" data-bs-toggle="button">
+    <!-- <button type="button" class="btn btn-outline-danger mt-4 mx-3" data-bs-toggle="button">
       Data Live
     </button>
-    <button type="button" class="btn btn-outline-success mt-3 mx-3">Data History</button>
+    <button type="button" class="btn btn-outline-success mt-3 mx-3">Data History</button> -->
   </div>
 </template>

@@ -1,13 +1,20 @@
 <template>
     <div class="card">
         <div class="card-header"> 
-          <button type="button" class="btn btn-outline-danger btn-sm me-2" data-bs-toggle="button">
+          <button v-if="$route.name !== 'history'" type="button" class="btn btn-outline-danger btn-sm me-2" data-bs-toggle="button">
             Data Live
+          </button>
+          <button v-if="$route.name !== 'home'" type="button" class="btn btn-outline-success btn-sm me-2" data-bs-toggle="button">
+            Data History
           </button>
           Station {{ stationName }} | {{ infos[stationName] }}
         </div>
-        <div class="card-body">
-        <h5>{{ readableTimestamp() }}</h5>
+        <div class="card-body d-flex flex-row justify-content-between">
+          <h5>{{ readableTimestamp() }}</h5>
+          <div>
+            <router-link v-if="$route.name !== 'home'"  to="/" class="btn btn-outline-danger btn-sm me-2" data-bs-toggle="button">Go Data Live</router-link>
+            <router-link v-if="$route.name !== 'history'" to="/history" class="btn btn-outline-success btn-sm me-2" data-bs-toggle="button">Go Data History</router-link>
+          </div>
         </div>
     </div>
 </template>
