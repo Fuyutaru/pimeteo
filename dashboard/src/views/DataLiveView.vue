@@ -2,7 +2,7 @@
   <div class="container">
       <div class="row mb-4">
           <div class="col">
-              <HeaderApp />
+              <HeaderApp @updateStationName="maj_station" />
               <InfoStation :stationName="stationName" :timestamp="timestamp"/>
           </div>
       </div>
@@ -89,6 +89,9 @@ export default {
           url: this.sensorIcon[sensor],
         }
       });
+    },
+    maj_station(newStationName){
+      this.stationName = newStationName;
     },
     get_date() {
       setInterval(() => {

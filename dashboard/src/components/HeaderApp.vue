@@ -37,13 +37,11 @@ export default {
   methods: {
     stationCliqued(newStationName) {
       this.stationName = newStationName;
-      console.log(this.stationName);
+      this.$emit('updateStationName', this.stationName);
+
     }
   }
-
-
 }
-
 </script>
 
 <style scoped></style>

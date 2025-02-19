@@ -1,6 +1,6 @@
 <template>
     <div class="card">
-        <div class="card-header"> Station {{ stationName }} | Vanessa et Zijian</div>
+        <div class="card-header"> Station {{ stationName }} | {{ infos[stationName] }}</div>
         <div class="card-body">
         <h5 class="card-title ">{{ readableTimestamp() }}</h5>
         </div>
@@ -17,6 +17,17 @@ export default {
     timestamp: {
       type: String,
       required: true
+    }
+  },
+  data() {
+    return {
+      infos: {
+        "Pi 28": "Vanessa et Zijian",
+        "Pi 27": "Romain et Jiongru",
+        "Pi 30": "Loïs et Jean-Baptiste",
+        "Pi 31": "Vincent et Ibrahim",
+        "Pi 32": "Thomas et Antonin"
+      }
     }
   },
   methods: {
