@@ -55,7 +55,7 @@ export default {
 
 
 
-    <div v-if= " timerangePicked === 'range' ">
+    <div v-if=" timeRangePicked === 'range' ">
       <span class="badge text-bg-primary mb-2">Start Date</span>
 
       <div class="input-group mb-3">
