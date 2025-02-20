@@ -18,8 +18,7 @@
     "morgan": "~1.9.1",
     "nmea-simple": "^3.3.0",
     "node-nmea": "^2.0.0",
-    "pug": "^3.0.3",
-    "cors": "^2.8.5"
+    "pug": "^3.0.3"
   },
   "devDependencies": {
     "nodemon": "^3.1.9"
