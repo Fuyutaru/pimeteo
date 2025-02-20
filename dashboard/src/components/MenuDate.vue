@@ -4,15 +4,13 @@ export default {
     return {
       sensorList: [],
       buttonTimerange: false,
-      time: "",
+      timeRangePicked: "",
+      timeRange: {"start": "2025-20-02T10:30", "stop": "now"},
     }
   },
   methods: {
     helloSensor() {
       this.$emit('update', this.sensorList)
-    },
-    toggleTimerange() {
-      this.buttonTimerange = !this.buttonTimerange;
     }
   },
 }
@@ -26,44 +24,48 @@ export default {
     <div class="d-flex flex-column my-3">
 
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="exampleRadios" id="hour" value="hour">
+        <input class="form-check-input" type="radio" v-model="timeRangePicked" id="hour" value="hour">
         <label class="form-check-label" for="hour">
           Last Hour
         </label>
       </div>
 
       <div class="form-check">
-        <input class="form-check-input" type="radio" name="exampleRadios" id="day" value="day">
+        <input class="form-check-input" type="radio" v-model="timeRangePicked" id="day" value="day">
         <label class="form-check-label" for="day">
           Last Day
         </label>
       </div>
   
-      <div class="form-check mb-3">
-        <input class="form-check-input" type="radio" name="exampleRadios" id="week" value="week">
+      <div class="form-check">
+        <input class="form-check-input" type="radio" v-model="timeRangePicked" id="week" value="week">
         <label class="form-check-label" for="week">
           Last week
         </label>
       </div>
 
-      <button type="button" class="btn btn-primary btn-sm" @click="toggleTimerange" :disabled="time.length !== 0">Choose time range</button>
-
+      <div class="form-check mb-3">
+        <input class="form-check-input" type="radio" v-model="timeRangePicked" name="exampleRadios" id="range" value="range">
+        <label class="form-check-label" for="range">
+          Choose time range
+        </label>
+      </div>
 
     </div>
 
 
 
-    <div v-if="buttonTimerange">
+    <div v-if= " timerangePicked === 'range' ">
       <span class="badge text-bg-primary mb-2">Start Date</span>
 
       <div class="input-group mb-3">
-          <input type="date" class="form-control" value="2017-06-01T08:30">
+          <input type="date" class="form-control" value="2025-20-02T10:30" v-model="timeRange.start">
       </div>
 
       <span class="badge text-bg-primary mb-2">Stop Date</span>
 
       <div class="input-group mb-3">
-          <input type="date" class="form-control" value="2017-06-01T08:30">
+          <input type="date" class="form-control" value="2025-20-02T11:00" v-model="timeRange.stop">
       </div>
 
       <button type="button" class="btn btn-primary btn-sm">Submit</button>
