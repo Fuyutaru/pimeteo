@@ -64,6 +64,16 @@ export default {
     }
   },
   mounted(){
+    // fetch('http://piensg028.ensg.eu:3000/live', { 
+    //   mode:'no-cors',
+    //   headers: {
+    //     "Content-Type": 'application/json',
+    //   }
+    // })
+    // .then(response => response.json())
+    // .then(json => console.log(json));
+
+
     fetch("./live.json")
       .then(response => response.json())
       .then(json => {
