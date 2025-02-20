@@ -74,7 +74,7 @@ export default {
     // .then(json => console.log(json));
 
 
-    fetch("./live.json")
+    fetch("./live2.json")
       .then(response => response.json())
       .then(json => {
         this.dataLive=json;
