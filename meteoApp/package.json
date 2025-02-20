@@ -14,6 +14,7 @@
     "debug": "~2.6.9",
     "express": "^4.21.2",
     "http-errors": "~1.6.3",
+    "maplibre-gl": "^5.1.0",
     "morgan": "~1.9.1",
     "nmea-simple": "^3.3.0",
     "node-nmea": "^2.0.0",
