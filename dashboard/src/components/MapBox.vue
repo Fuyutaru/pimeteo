@@ -14,9 +14,9 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 export default {
   props: {
     location: {
-        type: Object,
-        required: true
-      },
+      type: Object,
+      required: true
+    },
   },
   data() {
     return {
@@ -31,7 +31,7 @@ export default {
       this.map = new maplibregl.Map({
         container: 'map',
         style:
-          'https://api.maptiler.com/maps/streets/style.json?key=get_your_own_OpIi9ZULNHzrESv6T2vL',
+          'https://api.maptiler.com/maps/streets-v2/style.json?key=AJPmdudX9yJ2dZbT3iuM',
         center: [this.location.lon, this.location.lat],
         zoom: 7,
         minZoom: 2,
