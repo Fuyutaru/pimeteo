@@ -64,31 +64,34 @@ export default {
     }
   },
   mounted(){
-    // fetch('http://piensg028.ensg.eu:3000/live', { 
-    //   mode:'no-cors',
-    //   headers: {
-    //     "Content-Type": 'application/json',
-    //   }
-    // })
-    // .then(response => response.json())
-    // .then(json => console.log(json));
+    fetch(`http://piensg028.ensg.eu:3000/live`, { 
+      headers: {
+        "Content-Type": 'application/json',
+      }
+    })
+    .then(response => response.json())
+    .then(json => {
+      this.dataLive=json;
+      this.location = {'lon': json.data.long, 'lat': json.data.lat};
+    })
+    .catch(error => console.error('Error:', error));
 
+    // fetch("./live2.json")
+    //   .then(response => response.json())
+    //   .then(json => {
+    //     this.dataLive=json;
+    //     this.location = {'lon': json.data.long, 'lat': json.data.lat};
+    //   });
 
-    fetch("./live2.json")
-      .then(response => response.json())
-      .then(json => {
-        this.dataLive=json;
-        this.location = {'lon': json.data.long, 'lat': json.data.lat};
-      });
     this.get_date();
   },
   watch: {
     timestamp(newVal) {
       const minute = new Date(newVal).getMinutes();
       if (minute % 10 === 0){
-        console.log(minute);
+        console.log("time to fetch");
       }
-    }
+    },
   },
   methods: {
     maj_sensor(sensorSelected) {
@@ -102,6 +105,17 @@ export default {
     },
     maj_station(newStationName){
       this.stationName = newStationName;
+      fetch(`http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live`, { 
+      headers: {
+        "Content-Type": 'application/json',
+      }
+      })
+      .then(response => response.json())
+      .then(json => {
+        this.dataLive=json;
+        this.location = {'lon': json.data.long, 'lat': json.data.lat};
+      })
+      .catch(error => console.error('Error:', error));
     },
     get_date() {
       setInterval(() => {
