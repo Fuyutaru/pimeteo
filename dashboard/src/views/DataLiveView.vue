@@ -64,17 +64,7 @@ export default {
     }
   },
   mounted(){
-    fetch(`http://piensg028.ensg.eu:3000/live`, { 
-      headers: {
-        "Content-Type": 'application/json',
-      }
-    })
-    .then(response => response.json())
-    .then(json => {
-      this.dataLive=json;
-      this.location = {'lon': json.data.long, 'lat': json.data.lat};
-    })
-    .catch(error => console.error('Error:', error));
+    this.fetchDataLive();
 
     // fetch("./live2.json")
     //   .then(response => response.json())
@@ -105,22 +95,24 @@ export default {
     },
     maj_station(newStationName){
       this.stationName = newStationName;
-      fetch(`http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live`, { 
-      headers: {
-        "Content-Type": 'application/json',
-      }
-      })
-      .then(response => response.json())
-      .then(json => {
-        this.dataLive=json;
-        this.location = {'lon': json.data.long, 'lat': json.data.lat};
-      })
-      .catch(error => console.error('Error:', error));
+      this.fetchDataLive();
     },
     get_date() {
       setInterval(() => {
         this.timestamp = new Date().toISOString();
       }, 1_000);
+    },
+    async fetchDataLive() {
+      try {
+        const response = await fetch(`http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live`);
+        if (response.ok) {
+            this.dataLive = await response.json(); 
+        } else {
+            throw new Error('Failed to fetch data');
+        }
+      } catch (error) {
+          console.error('Error:', error); 
+        }
     }
   },
 }
