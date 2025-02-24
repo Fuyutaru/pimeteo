@@ -78,12 +78,12 @@ export default {
             <input type="date" class="form-control" value="2025-20-02T11:00" v-model="timeRange.stop">
         </div>
 
-        <span class="badge text-bg-secondary mb-2">Choose an interval</span>
+        <!-- <span class="badge text-bg-secondary mb-2">Choose an interval</span>
         <select class="form-select form-select-sm mb-3" aria-label="Default select example"  v-model="stepDate">
           <option selected disabled value="">Selection</option>
           <option value="hour">1 hour</option>
           <option value="day">1 day</option>
-        </select>
+        </select> -->
 
         <button type="submit" class="btn btn-primary btn-sm">Submit</button>
 

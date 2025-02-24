@@ -8,10 +8,10 @@
       </div>
       <div class="row">
           <div class="col-2">
-              <MenuApp @update="maj_sensor" />
+              <MenuApp @updateSensor="maj_sensor" />
           </div>
           <div class="col-10">
-            <DataLiveBoard :sensorList="sensorList" :location="location"/>
+            <DataLiveBoard :sensorList="sensorData" :location="location"/>
           </div>
       </div>
   </div>
@@ -40,9 +40,10 @@ export default {
   data() {
     return {
       sensorList: [],
+      sensorData: [],
       dataLive: {},
       timestamp: "",
-      location: {lon: 2, lat: 48},
+      location: {lon: 0, lat: 0},
       stationName: "Pi 28",
       sensorName: {"rain": "Precipitation", 
                    "temperature": "Temperature", 
@@ -64,7 +65,7 @@ export default {
     }
   },
   mounted(){
-    this.fetchDataLive();
+    // this.fetchDataLive();
 
     // fetch("./live2.json")
     //   .then(response => response.json())
@@ -82,16 +83,33 @@ export default {
         console.log("time to fetch");
       }
     },
-  },
-  methods: {
-    maj_sensor(sensorSelected) {
-      this.sensorList = sensorSelected.map(sensor => {
+    dataLive() {
+      if (this.sensorList.includes('lat-lon')) {
+        this.location = {'lon': this.dataLive.data.lon, 'lat': this.dataLive.data.lat};
+        console.log(this.location)
+      }
+      this.sensorData = this.sensorList.filter(e => e !== 'lat-lon').map(sensor => {
         return {
           name: this.sensorName[sensor],
           val: `${this.dataLive.data[sensor]} ${this.dataLive.unit[sensor]}`,
           url: this.sensorIcon[sensor],
         }
       });
+    }
+  },
+  methods: {
+    maj_sensor(sensorSelected) {
+      if (sensorSelected.includes('all')) {
+        this.sensorList = Object.keys(this.sensorName)
+      }
+      else {
+        this.sensorList = sensorSelected.filter(e => e !== 'location' && e !== 'all');
+      }
+      if (sensorSelected.includes('location')) {
+        this.sensorList.push('lat-lon');
+      }
+      this.fetchDataLive();
+
     },
     maj_station(newStationName){
       this.stationName = newStationName;
@@ -104,9 +122,9 @@ export default {
     },
     async fetchDataLive() {
       try {
-        const response = await fetch(`http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live`);
+        const response = await fetch(`http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live/${this.sensorList.join('-')}`);
         if (response.ok) {
-            this.dataLive = await response.json(); 
+            this.dataLive = await response.json();
         } else {
             throw new Error('Failed to fetch data');
         }

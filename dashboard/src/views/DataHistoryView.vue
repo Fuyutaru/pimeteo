@@ -8,8 +8,10 @@
       </div>
       <div class="row">
           <div class="col-2">
-              <MenuApp @update="maj_sensor" />
-              <div v-if="sensorList.length !== 0"><MenuDate/></div>
+              <MenuApp @updateSensor="maj_sensor" />
+              <div v-if="sensorList.length !== 0">
+                <MenuDate/>
+              </div>
               <div v-else>
                 <div class="alert alert-warning d-flex align-items-center mt-4" role="alert">
                     Please select at least one sensor
@@ -27,7 +29,7 @@
 <script>
 import HeaderApp from '@/components/HeaderApp.vue'
 import MenuApp from '@/components/MenuApp.vue'
-import DataLiveBoard from '@/components/DataLiveBoard.vue'
+import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
 import TemperatureIcon from '@/assets/temperature.png'
 import InfoStation from '@/components/InfoStation.vue'
 import LumIcon from '@/assets/luminosity.png'
@@ -44,50 +46,52 @@ export default {
     InfoStation,
     MenuApp,
     MenuDate,
-    DataLiveBoard,
+    DataHistoryBoard,
   },
   data() {
     return {
       sensorList: [],
-      dataLive: {},
+      dataHistory: {},
       timestamp: "",
       location: {lon: 2, lat: 48},
       stationName: "Pi 28",
       sensorName: {"rain": "Precipitation", 
-                    "temperature": "Temperature", 
-                    "humidity": "Humidity",
-                    "pressure": "Pressure",
-                    "wind_speed_avg": "Wind Speed",
-                    "wind_heading": "Wind Heading",
-                    "luminosity": "Luminosity"
+                   "temperature": "Temperature", 
+                   "humidity": "Humidity",
+                   "pressure": "Pressure",
+                   "wind_speed_avg": "Wind Speed",
+                   "wind_heading": "Wind Heading",
+                   "luminosity": "Luminosity"
                   },
       sensorIcon: {"rain": PrecipIcon, 
-                    "temperature": TemperatureIcon, 
-                    "humidity": HumIcon,
-                    "pressure": PressIcon,
-                    "wind_speed_avg": SpeedIcon,
-                    "wind_heading": HeadIcon,
-                    "luminosity": LumIcon
+                   "temperature": TemperatureIcon, 
+                   "humidity": HumIcon,
+                   "pressure": PressIcon,
+                   "wind_speed_avg": SpeedIcon,
+                   "wind_heading": HeadIcon,
+                   "luminosity": LumIcon
                   },
-      isLoading: true,
     }
   },
   mounted(){
-    fetch("./live.json")
+    // this.fetchDataLive();
+
+    fetch("./now.json")
       .then(response => response.json())
       .then(json => {
-        this.dataLive=json;
+        this.dataHistory=json;
         this.location = {'lon': json.data.long, 'lat': json.data.lat};
       });
+
     this.get_date();
   },
   watch: {
     timestamp(newVal) {
       const minute = new Date(newVal).getMinutes();
       if (minute % 10 === 0){
-        console.log(minute);
+        console.log("time to fetch");
       }
-    }
+    },
   },
   methods: {
     maj_sensor(sensorSelected) {
@@ -101,15 +105,31 @@ export default {
     },
     maj_station(newStationName){
       this.stationName = newStationName;
+      this.fetchDataLive();
     },
     get_date() {
       setInterval(() => {
         this.timestamp = new Date().toISOString();
       }, 1_000);
+    },
+    async fetchDataLive() {
+      try {
+        const response = await fetch(`http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live`);
+        if (response.ok) {
+            this.dataHistory = await response.json();
+            this.location.lon = this.dataHistory.data[0].lon
+        } else {
+            throw new Error('Failed to fetch data');
+        }
+      } catch (error) {
+          console.error('Error:', error); 
+        }
     }
   },
 }
 
 </script>
+
+
   
   
