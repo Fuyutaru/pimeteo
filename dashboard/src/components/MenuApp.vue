@@ -19,6 +19,7 @@ export default {
     helloSensor() {
       this.$emit('updateSensor', this.sensorList)
     },
+    
     handleSensorChange(sensor) {
       if (sensor === 'all') {
         this.sensorList = ['all'];

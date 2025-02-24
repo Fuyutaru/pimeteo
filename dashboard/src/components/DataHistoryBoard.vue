@@ -1,14 +1,14 @@
 <script>
-  import MapBox from './MapBox.vue'
-  import ChartItem from './ChartItem.vue'
+import MapBox from './MapBox.vue'
+import SensorItem from './SensorItem.vue';
 
   export default {
     components: {
       MapBox,
-      ChartItem,
+      SensorItem,
     },
     props: {
-      sensorList: {
+      sensorData: {
         type: Array,
         required: true
       },
@@ -24,12 +24,12 @@
   <div class="box">
     <div class="sensorBox">
       
-      <div v-for="sensor in sensorList" :key="sensor">
-        <ChartItem>
+      <div v-for="sensor in sensorData" :key="sensor">
+        <SensorItem>
           <template #icon> <img alt="icon" class="icon-square" :src=sensor.url /> </template>
           <template #title>{{ sensor.name }}</template>
           <template #val>{{ sensor.val }}</template>
-        </ChartItem>
+        </SensorItem>
       </div>
     </div>
 

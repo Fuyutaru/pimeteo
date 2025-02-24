@@ -61,7 +61,6 @@ export default {
                    "wind_heading": HeadIcon,
                    "luminosity": LumIcon
                   },
-      isLoading: true,
     }
   },
   mounted(){
@@ -86,7 +85,6 @@ export default {
     dataLive() {
       if (this.sensorList.includes('lat-lon')) {
         this.location = {'lon': this.dataLive.data.lon, 'lat': this.dataLive.data.lat};
-        console.log(this.location)
       }
       this.sensorData = this.sensorList.filter(e => e !== 'lat-lon').map(sensor => {
         return {
@@ -112,15 +110,17 @@ export default {
       }
       this.fetchDataLive();
     },
+
     maj_station(newStationName){
       this.stationName = newStationName;
-      this.fetchDataLive();
     },
+
     get_date() {
       setInterval(() => {
         this.timestamp = new Date().toISOString();
       }, 1_000);
     },
+    
     async fetchDataLive() {
       try {
         const response = await fetch(`http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live/${this.sensorList.join('-')}`);

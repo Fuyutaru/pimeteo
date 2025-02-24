@@ -10,7 +10,7 @@
           <div class="col-2">
               <MenuApp @updateSensor="maj_sensor" />
               <div v-if="sensorList.length !== 0">
-                <MenuDate/>
+                <MenuDate @updateTimeRange="maj_timeRange"/>
               </div>
               <div v-else>
                 <div class="alert alert-warning d-flex align-items-center mt-4" role="alert">
@@ -20,7 +20,7 @@
               
           </div>
           <div class="col-10">
-            <DataLiveBoard :sensorList="sensorList" :location="location"/>
+            <DataHistoryBoard :sensorData="sensorData" :location="location"/>
           </div>
       </div>
   </div>
@@ -51,9 +51,11 @@ export default {
   data() {
     return {
       sensorList: [],
+      sensorData: [],
       dataHistory: {},
       timestamp: "",
-      location: {lon: 2, lat: 48},
+      timerange: {start: '', stop: ''},
+      location: {lon: 0, lat: 0},
       stationName: "Pi 28",
       sensorName: {"rain": "Precipitation", 
                    "temperature": "Temperature", 
@@ -74,15 +76,6 @@ export default {
     }
   },
   mounted(){
-    // this.fetchDataLive();
-
-    fetch("./now.json")
-      .then(response => response.json())
-      .then(json => {
-        this.dataHistory=json;
-        this.location = {'lon': json.data.long, 'lat': json.data.lat};
-      });
-
     this.get_date();
   },
   watch: {
@@ -92,32 +85,69 @@ export default {
         console.log("time to fetch");
       }
     },
+    dataHistory() {
+      // if (this.sensorList.includes('lat-lon')) {
+      //   this.location = {'lon': this.dataHistory.data.lon, 'lat': this.dataHistory.data.lat};
+      // }
+      // this.sensorData = this.sensorList.filter(e => e !== 'lat-lon').map(sensor => {
+      //   return {
+      //     name: this.sensorName[sensor],
+      //     val: `${this.dataHistory.data[sensor]} ${this.dataHistory.unit[sensor]}`,
+      //     url: this.sensorIcon[sensor],
+      //   }
+      // });
+      console.log(this.dataHistory);
+    }
   },
   methods: {
     maj_sensor(sensorSelected) {
-      this.sensorList = sensorSelected.map(sensor => {
-        return {
-          name: this.sensorName[sensor],
-          val: `${this.dataLive.data[sensor]} ${this.dataLive.unit[sensor]}`,
-          url: this.sensorIcon[sensor],
-        }
-      });
+      if (sensorSelected.includes('all')) {
+        this.sensorList = Object.keys(this.sensorName);
+        this.sensorList.push('lat-lon');
+      }
+      else {
+        this.sensorList = sensorSelected.filter(e => e !== 'location' && e !== 'all');
+        this.location = {lon: 0, lat: 0};
+      }
+      if (sensorSelected.includes('location')) {
+        this.sensorList.push('lat-lon');
+      }
     },
+
     maj_station(newStationName){
       this.stationName = newStationName;
+    },
+
+    maj_timeRange(newTimerange) {
+      this.timerange = newTimerange;
       this.fetchDataLive();
     },
+
     get_date() {
       setInterval(() => {
         this.timestamp = new Date().toISOString();
       }, 1_000);
     },
+
+    // fetchDataLive() {
+    //   fetch("./live2.json")
+    //     .then(response => response.json())
+    //     .then(json => {
+    //       this.dataHistory=json;
+    //     });
+    // },
+    
     async fetchDataLive() {
       try {
-        const response = await fetch(`http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live`);
+        const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`;
+        const time = `${this.timerange.start}/${this.timerange.stop}`;
+        const sensor = this.sensorList.join('-');
+        const route = `${station}/${time}/${sensor}`;
+
+        const response = await fetch(route);
         if (response.ok) {
-            this.dataHistory = await response.json();
-            this.location.lon = this.dataHistory.data[0].lon
+          console.log(route)
+          this.dataHistory = await response.json();
         } else {
             throw new Error('Failed to fetch data');
         }
@@ -131,5 +161,4 @@ export default {
 </script>
 
 
-  
   
