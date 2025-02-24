@@ -5,7 +5,7 @@ import DataHistoryView from './views/DataHistoryView.vue';
 </script>
 
 <template>
-  <DataHistoryView />
+  <RouterView />
 
 
 </template>
