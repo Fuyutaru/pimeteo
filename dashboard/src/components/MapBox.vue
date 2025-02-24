@@ -21,6 +21,7 @@ export default {
   data() {
     return {
       map: null,
+      marker: null
     }
   },
   mounted() {
@@ -28,15 +29,26 @@ export default {
   },
   watch: {
     location() {
-      const marker = new maplibregl.Marker()
-        .setLngLat([this.location.lon, this.location.lat])
-        .addTo(this.map);
+      if (this.location.lon + this.location.lat === 0) {
+        this.initializeMap();
+        this.marker = null;
+      }
+      else {
 
-      this.map.flyTo({
-      center: [this.location.lon, this.location.lat],
-      zoom: 10,
-      essential: true
-      });
+        if (!this.marker) {
+          
+          this.marker = new maplibregl.Marker()
+          .setLngLat([this.location.lon, this.location.lat])
+          .addTo(this.map);
+
+          this.map.flyTo({
+          center: [this.location.lon, this.location.lat],
+          zoom: 10,
+          essential: true
+          });
+        }
+
+      }
     }
 
   },

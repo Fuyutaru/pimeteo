@@ -19,6 +19,14 @@ export default {
     helloSensor() {
       this.$emit('updateSensor', this.sensorList)
     },
+    handleSensorChange(sensor) {
+      if (sensor === 'all') {
+        this.sensorList = ['all'];
+      } else {
+        this.sensorList = this.sensorList.filter(item => item !== 'all');
+      }
+      this.helloSensor();
+    }
   },
 }
 </script>
@@ -36,7 +44,7 @@ export default {
             type = "checkbox"
             :value = sensor
             v-model = "sensorList"
-            @change = "helloSensor"
+            @change = "handleSensorChange(sensor)"
           />
           <label class="form-check-label"> {{ sensor === 'rain' ? 'precipitation' : sensor }} </label>
         </div>

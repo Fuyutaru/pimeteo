@@ -100,16 +100,17 @@ export default {
   methods: {
     maj_sensor(sensorSelected) {
       if (sensorSelected.includes('all')) {
-        this.sensorList = Object.keys(this.sensorName)
+        this.sensorList = Object.keys(this.sensorName);
+        this.sensorList.push('lat-lon');
       }
       else {
         this.sensorList = sensorSelected.filter(e => e !== 'location' && e !== 'all');
+        this.location = {lon: 0, lat: 0};
       }
       if (sensorSelected.includes('location')) {
         this.sensorList.push('lat-lon');
       }
       this.fetchDataLive();
-
     },
     maj_station(newStationName){
       this.stationName = newStationName;
