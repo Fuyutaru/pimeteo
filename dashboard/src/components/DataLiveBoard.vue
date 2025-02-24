@@ -8,7 +8,7 @@
       SensorItem,
     },
     props: {
-      sensorList: {
+      sensorData: {
         type: Array,
         required: true
       },
@@ -24,7 +24,7 @@
   <div class="box">
     <div class="sensorBox">
       
-      <div v-for="sensor in sensorList" :key="sensor">
+      <div v-for="sensor in sensorData" :key="sensor">
         <SensorItem>
           <template #icon> <img alt="icon" class="icon-square" :src=sensor.url /> </template>
           <template #title>{{ sensor.name }}</template>

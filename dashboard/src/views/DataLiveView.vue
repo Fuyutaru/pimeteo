@@ -11,7 +11,7 @@
               <MenuApp @updateSensor="maj_sensor" />
           </div>
           <div class="col-10">
-            <DataLiveBoard :sensorList="sensorData" :location="location"/>
+            <DataLiveBoard :sensorData="sensorData" :location="location"/>
           </div>
       </div>
   </div>

@@ -21,7 +21,7 @@ export default {
   data() {
     return {
       map: null,
-      marker: null
+      marker: null,
     }
   },
   mounted() {
