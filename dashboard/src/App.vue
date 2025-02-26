@@ -1,13 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import DataHistoryView from './views/DataHistoryView.vue';
-
+import MapView from './views/MapView.vue'
 </script>
 
 <template>
-  <RouterView />
-
-
+  <MapView />
 </template>
 
 <style scoped></style>
