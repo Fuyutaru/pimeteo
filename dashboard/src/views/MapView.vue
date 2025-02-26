@@ -56,6 +56,12 @@ export default {
   methods: {
     maj_station(newStationName) {
       this.stationName = newStationName
+      const location = this.stationsInfos[this.stationName].loc
+      this.map.flyTo({
+        center: [location.lon, location.lat],
+        zoom: 10,
+        essential: true,
+      })
     },
 
     get_date() {
