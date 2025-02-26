@@ -2,24 +2,54 @@
 export default {
   data() {
     return {
-      sensorList: [],
       buttonTimerange: false,
       timeRangePicked: "",
-      timeRange: {"start": "2025-20-02T10:30", "stop": "now"},
-      stepDate: "",
+      timeRange: {"start": null, "stop": null},
     }
   },
   methods: {
-    helloSensor() {
-      this.$emit('update', this.sensorList)
+    helloTimeRange() {
+      const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour:'numeric', minute:'numeric', second:'numeric'};
+
+      if (this.timeRangePicked === 'range') {
+        for (const key of Object.keys(this.timeRange)) {
+          this.timeRange[key] = this.dateToLocalISO(new Date(this.timeRange[key]));
+        }
+      }
+
+      this.$emit('updateTimeRange', this.timeRange);
     },
-    helloStep() {
-      console.log(this.stepDate);
+
+    dateToLocalISO(date) {
+      return new Date(date.getTime() - date.getTimezoneOffset() * 60 * 1000).toISOString();
     }
   },
   watch: {
     timeRangePicked(newVal) {
-      console.log(this.timeRangePicked, new Date().toISOString());
+      const hour = 1000 * 60 * 60;
+      const day = hour * 24;
+      const week = day * 7;
+      const today = new Date();
+
+      this.timeRange.stop = 'now';
+
+      if (newVal === 'hour') {
+        this.timeRange.start = new Date(today.getTime() - hour);
+      }
+
+      if (newVal === 'day') {
+        this.timeRange.start = new Date(today.getTime() - day);
+      }
+
+      if (newVal === 'week') {
+        this.timeRange.start = new Date(today.getTime() - week);
+      }
+
+      if (newVal !== 'range') {
+        this.timeRange.start = this.dateToLocalISO(this.timeRange.start);
+        this.helloTimeRange();
+      }
+
     }
   }
 }
@@ -65,11 +95,11 @@ export default {
     <div v-if=" timeRangePicked === 'range' ">
 
 
-      <form  @submit.prevent="helloStep">
+      <form  @submit.prevent="helloTimeRange">
         <span class="badge text-bg-primary mb-2">Start Date</span>
 
         <div class="input-group mb-3">
-            <input type="date" class="form-control" value="2025-20-02T10:30" v-model="timeRange.start">
+            <input type="date" class="form-control" value="2025-1-02T10:30" v-model="timeRange.start">
         </div>
 
         <span class="badge text-bg-primary mb-2">Stop Date</span>
@@ -78,12 +108,12 @@ export default {
             <input type="date" class="form-control" value="2025-20-02T11:00" v-model="timeRange.stop">
         </div>
 
-        <span class="badge text-bg-secondary mb-2">Choose an interval</span>
+        <!-- <span class="badge text-bg-secondary mb-2">Choose an interval</span>
         <select class="form-select form-select-sm mb-3" aria-label="Default select example"  v-model="stepDate">
           <option selected disabled value="">Selection</option>
           <option value="hour">1 hour</option>
           <option value="day">1 day</option>
-        </select>
+        </select> -->
 
         <button type="submit" class="btn btn-primary btn-sm">Submit</button>
 

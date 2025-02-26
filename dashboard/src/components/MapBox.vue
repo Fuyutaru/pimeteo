@@ -21,10 +21,36 @@ export default {
   data() {
     return {
       map: null,
+      marker: null,
     }
   },
   mounted() {
     this.initializeMap();
+  },
+  watch: {
+    location() {
+      if (this.location.lon + this.location.lat === 0) {
+        this.initializeMap();
+        this.marker = null;
+      }
+      else {
+
+        if (!this.marker) {
+          
+          this.marker = new maplibregl.Marker()
+          .setLngLat([this.location.lon, this.location.lat])
+          .addTo(this.map);
+
+          this.map.flyTo({
+          center: [this.location.lon, this.location.lat],
+          zoom: 10,
+          essential: true
+          });
+        }
+
+      }
+    }
+
   },
   methods: {
     initializeMap() {
@@ -32,13 +58,11 @@ export default {
         container: 'map',
         style:
           'https://api.maptiler.com/maps/streets-v2/style.json?key=AJPmdudX9yJ2dZbT3iuM',
-        center: [this.location.lon, this.location.lat],
-        zoom: 7,
+        center: [2, 48],
+        zoom: 4,
         minZoom: 2,
       });
-      const marker = new maplibregl.Marker()
-        .setLngLat([this.location.lon, this.location.lat])
-        .addTo(this.map);
+
     },
   },
 }

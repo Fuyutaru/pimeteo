@@ -1,6 +1,6 @@
 <script>
-  import MapBox from './MapBox.vue'
-  import SensorItem from './SensorItem.vue'
+import MapBox from './MapBox.vue'
+import SensorItem from './SensorItem.vue';
 
   export default {
     components: {
