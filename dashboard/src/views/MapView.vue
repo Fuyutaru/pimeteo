@@ -1,20 +1,17 @@
 <template>
-
   <div class="container">
-
     <div class="row mb-4">
       <div class="col">
         <HeaderApp @updateStationName="maj_station" />
         <InfoStation :stationName="stationName" :timestamp="timestamp" />
       </div>
     </div>
-    
+
     <div class="row-10">
       <div class="box">
-        <div id="map" style="width: 500px; height: 500px;"></div>
+        <div id="map"></div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -23,8 +20,6 @@ import maplibregl from 'maplibre-gl'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import HeaderApp from '@/components/HeaderApp.vue'
 import InfoStation from '@/components/InfoStation.vue'
-
-
 
 export default {
   components: {
@@ -41,13 +36,13 @@ export default {
         'Pi 32': { name: 'Thomas et Antonin', loc: null },
       },
       stationName: 'Pi 28',
-      timestamp:"",
+      timestamp: '',
       map: null,
     }
   },
   async mounted() {
-    await this.fetchAllStationData();
-    this.initializeMap();
+    await this.fetchAllStationData()
+    this.initializeMap()
     this.get_date()
   },
   watch: {
@@ -60,7 +55,7 @@ export default {
   },
   methods: {
     maj_station(newStationName) {
-      this.stationName = newStationName;
+      this.stationName = newStationName
     },
 
     get_date() {
@@ -72,40 +67,37 @@ export default {
     initializeMap() {
       this.map = new maplibregl.Map({
         container: 'map',
-        style:
-          'https://api.maptiler.com/maps/streets-v2/style.json?key=AJPmdudX9yJ2dZbT3iuM',
+        style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=AJPmdudX9yJ2dZbT3iuM',
         center: [2, 48],
         zoom: 2,
         minZoom: 2,
-      });
+      })
 
       for (const [stationName, stationInfo] of Object.entries(this.stationsInfos)) {
         if (stationInfo.loc) {
-          this.addMarker(stationInfo.loc.lon, stationInfo.loc.lat);
+          this.addMarker(stationInfo.loc.lon, stationInfo.loc.lat)
         }
       }
-
-
     },
 
     async fetchAllStationData() {
-      const promises = Object.keys(this.stationsInfos).map(name => this.fetchDataLive(name));
-      await Promise.all(promises);
+      const promises = Object.keys(this.stationsInfos).map((name) => this.fetchDataLive(name))
+      await Promise.all(promises)
     },
 
     addMarker(lon, lat) {
       console.log(lon, lat)
-      new maplibregl.Marker()
-          .setLngLat([lon, lat])
-          .addTo(this.map);
+      new maplibregl.Marker().setLngLat([lon, lat]).addTo(this.map)
     },
 
     async fetchDataLive(station) {
       try {
-        const response = await fetch(`http://piensg0${station.split(' ')[1]}.ensg.eu:3000/live/lat-lon`)
+        const response = await fetch(
+          `http://piensg0${station.split(' ')[1]}.ensg.eu:3000/live/lat-lon`,
+        )
         if (response.ok) {
-          const jsonData = await response.json();
-          this.stationsInfos[station].loc = {'lon': jsonData.data.lon, 'lat': jsonData.data.lat};
+          const jsonData = await response.json()
+          this.stationsInfos[station].loc = { lon: jsonData.data.lon, lat: jsonData.data.lat }
         } else {
           throw new Error('Failed to fetch data')
         }
@@ -117,17 +109,23 @@ export default {
 }
 </script>
 
-
 <style scoped>
 .box {
   background-color: #eee;
   padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+  height: 100vh;
 }
 
-#map {
+#map {
   width: 100%;
   height: 100%;
+  border-radius: 8px;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.1);
 }
 </style>
