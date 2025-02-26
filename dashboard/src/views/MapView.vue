@@ -6,20 +6,29 @@
         <InfoStation :stationName="stationName" :timestamp="timestamp" />
       </div>
     </div>
+    
     <div class="row">
       <div class="row-10">
-        <DataLiveBoard :sensorData="sensorData" :location="location" />
+        <div class="box">
+          <div id="map"></div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import maplibregl from 'maplibre-gl'
+import 'maplibre-gl/dist/maplibre-gl.css'
+import HeaderApp from '@/components/HeaderApp.vue'
+import InfoStation from '@/components/InfoStation.vue'
+
+
+
 export default {
   components: {
     HeaderApp,
     InfoStation,
-    DataLiveBoard,
   },
   data() {
     return {
@@ -31,9 +40,12 @@ export default {
         'Pi 32': { name: 'Thomas et Antonin', loc: '' },
       },
       stationName: 'Pi 28',
+      timestamp:"",
+      map: null,
     }
   },
   mounted() {
+    this.initializeMap();
     for (const key of Object.keys(this.stationsInfos)) {
     }
     this.get_date()
@@ -57,6 +69,18 @@ export default {
       }, 1_000)
     },
 
+    initializeMap() {
+      this.map = new maplibregl.Map({
+        container: 'map',
+        style:
+          'https://api.maptiler.com/maps/streets-v2/style.json?key=AJPmdudX9yJ2dZbT3iuM',
+        center: [2, 48],
+        zoom: 4,
+        minZoom: 2,
+      });
+
+    },
+
     async fetchDataLive(station) {
       try {
         const response = await fetch(`http://piensg0${station}.ensg.eu:3000/live/lat-lon`)
@@ -72,3 +96,18 @@ export default {
   },
 }
 </script>
+
+
+<style scoped>
+.box {
+  background-color: #eee;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+#map {
+  width: 100px;
+  height: 100px;
+}
+</style>

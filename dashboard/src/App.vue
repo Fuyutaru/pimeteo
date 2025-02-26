@@ -4,7 +4,7 @@ import MapView from './views/MapView.vue'
 </script>
 
 <template>
-  <MapView />
+  <RouterView />
 </template>
 
 <style scoped></style>
