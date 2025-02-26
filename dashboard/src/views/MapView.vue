@@ -34,21 +34,20 @@ export default {
   data() {
     return {
       stationsInfos: {
-        'Pi 28': { name: 'Vanessa et Zijian', loc: '' },
-        'Pi 27': { name: 'Romain et Jiongru', loc: '' },
-        'Pi 30': { name: 'Loïs et Jean-Baptiste', loc: '' },
-        'Pi 31': { name: 'Vincent et Ibrahim', loc: '' },
-        'Pi 32': { name: 'Thomas et Antonin', loc: '' },
+        'Pi 28': { name: 'Vanessa et Zijian', loc: null },
+        'Pi 27': { name: 'Romain et Jiongru', loc: null },
+        'Pi 30': { name: 'Loïs et Jean-Baptiste', loc: null },
+        'Pi 31': { name: 'Vincent et Ibrahim', loc: null },
+        'Pi 32': { name: 'Thomas et Antonin', loc: null },
       },
       stationName: 'Pi 28',
       timestamp:"",
       map: null,
     }
   },
-  mounted() {
+  async mounted() {
+    await this.fetchAllStationData();
     this.initializeMap();
-    for (const key of Object.keys(this.stationsInfos)) {
-    }
     this.get_date()
   },
   watch: {
@@ -61,7 +60,7 @@ export default {
   },
   methods: {
     maj_station(newStationName) {
-      this.stationName = newStationName
+      this.stationName = newStationName;
     },
 
     get_date() {
@@ -76,17 +75,37 @@ export default {
         style:
           'https://api.maptiler.com/maps/streets-v2/style.json?key=AJPmdudX9yJ2dZbT3iuM',
         center: [2, 48],
-        zoom: 4,
+        zoom: 2,
         minZoom: 2,
       });
 
+      for (const [stationName, stationInfo] of Object.entries(this.stationsInfos)) {
+        if (stationInfo.loc) {
+          this.addMarker(stationInfo.loc.lon, stationInfo.loc.lat);
+        }
+      }
+
+
+    },
+
+    async fetchAllStationData() {
+      const promises = Object.keys(this.stationsInfos).map(name => this.fetchDataLive(name));
+      await Promise.all(promises);
+    },
+
+    addMarker(lon, lat) {
+      console.log(lon, lat)
+      new maplibregl.Marker()
+          .setLngLat([lon, lat])
+          .addTo(this.map);
     },
 
     async fetchDataLive(station) {
       try {
-        const response = await fetch(`http://piensg0${station}.ensg.eu:3000/live/lat-lon`)
+        const response = await fetch(`http://piensg0${station.split(' ')[1]}.ensg.eu:3000/live/lat-lon`)
         if (response.ok) {
-          const data = await response.json()
+          const jsonData = await response.json();
+          this.stationsInfos[station].loc = {'lon': jsonData.data.lon, 'lat': jsonData.data.lat};
         } else {
           throw new Error('Failed to fetch data')
         }

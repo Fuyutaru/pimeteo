@@ -64,8 +64,6 @@ export default {
     }
   },
   mounted(){
-    // this.fetchDataLive();
-
     // fetch("./live2.json")
     //   .then(response => response.json())
     //   .then(json => {
@@ -83,6 +81,7 @@ export default {
       }
     },
     dataLive() {
+
       if (this.sensorList.includes('lat-lon')) {
         this.location = {'lon': this.dataLive.data.lon, 'lat': this.dataLive.data.lat};
       }
@@ -113,6 +112,7 @@ export default {
 
     maj_station(newStationName){
       this.stationName = newStationName;
+      this.fetchDataLive();
     },
 
     get_date() {
