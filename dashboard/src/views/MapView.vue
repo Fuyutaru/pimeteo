@@ -1,5 +1,7 @@
 <template>
+
   <div class="container">
+
     <div class="row mb-4">
       <div class="col">
         <HeaderApp @updateStationName="maj_station" />
@@ -7,13 +9,12 @@
       </div>
     </div>
     
-    <div class="row">
-      <div class="row-10">
-        <div class="box">
-          <div id="map"></div>
-        </div>
+    <div class="row-10">
+      <div class="box">
+        <div id="map" style="width: 500px; height: 500px;"></div>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -107,7 +108,7 @@ export default {
 }
 
 #map {
-  width: 100px;
-  height: 100px;
+  width: 100%;
+  height: 100%;
 }
 </style>
