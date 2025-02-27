@@ -84,17 +84,22 @@ export default {
       console.log("-------------------------")
       for (let val of Object.values(this.stationsInfos)) {
         let location = val.loc;
-        console.log(location.lon)
-      }
-
-
-
-      for (let [stationName, stationInfo] of Object.entries(this.stationsInfos)) {
-        console.log("lon",stationInfo.loc.lon, stationInfo.loc.lat)
-        if (stationInfo.loc) {
-          this.addMarker(stationInfo.loc.lon, stationInfo.loc.lat);
+        if (location) {
+          if (-180 <= location.lon && location.lon <= 180 && -90 <= location.lat  && location.lat <= 90) {
+            this.addMarker(location.lon, location.lat);
+          }
+          
         }
       }
+
+
+
+      // for (let [stationName, stationInfo] of Object.entries(this.stationsInfos)) {
+      //   console.log("lon",stationInfo.loc.lon, stationInfo.loc.lat)
+      //   if (stationInfo.loc) {
+      //     this.addMarker(stationInfo.loc.lon, stationInfo.loc.lat);
+      //   }
+      // }
     },
 
     async fetchAllStationData() {
