@@ -1,9 +1,10 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
+import Date from '@/components/Date.vue'
 </script>
 
 <template>
-  <RouterView />
+  <Date />
 </template>
 
 <style scoped></style>
