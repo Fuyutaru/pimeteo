@@ -1,20 +1,17 @@
 <template>
-
   <div class="container">
-
     <div class="row mb-4">
       <div class="col">
         <HeaderApp @updateStationName="maj_station" />
         <InfoStation :stationName="stationName" :timestamp="timestamp" />
       </div>
     </div>
-    
+
     <div class="row-10">
       <div class="box">
-        <div id="map" style="width: 500px; height: 500px;"></div>
+        <div id="map"></div>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -24,8 +21,6 @@ import 'maplibre-gl/dist/maplibre-gl.css'
 import HeaderApp from '@/components/HeaderApp.vue'
 import InfoStation from '@/components/InfoStation.vue'
 
-
-
 export default {
   components: {
     HeaderApp,
@@ -34,21 +29,20 @@ export default {
   data() {
     return {
       stationsInfos: {
-        'Pi 28': { name: 'Vanessa et Zijian', loc: '' },
-        'Pi 27': { name: 'Romain et Jiongru', loc: '' },
-        'Pi 30': { name: 'Loïs et Jean-Baptiste', loc: '' },
-        'Pi 31': { name: 'Vincent et Ibrahim', loc: '' },
-        'Pi 32': { name: 'Thomas et Antonin', loc: '' },
+        'Pi 28': { name: 'Vanessa et Zijian', loc: null },
+        'Pi 27': { name: 'Romain et Jiongru', loc: null },
+        'Pi 30': { name: 'Loïs et Jean-Baptiste', loc: null },
+        'Pi 31': { name: 'Vincent et Ibrahim', loc: null },
+        'Pi 32': { name: 'Thomas et Antonin', loc: null },
       },
       stationName: 'Pi 28',
-      timestamp:"",
+      timestamp: '',
       map: null,
     }
   },
-  mounted() {
-    this.initializeMap();
-    for (const key of Object.keys(this.stationsInfos)) {
-    }
+  async mounted() {
+    await this.fetchAllStationData()
+    this.initializeMap()
     this.get_date()
   },
   watch: {
@@ -62,6 +56,12 @@ export default {
   methods: {
     maj_station(newStationName) {
       this.stationName = newStationName
+      const location = this.stationsInfos[this.stationName].loc
+      this.map.flyTo({
+        center: [location.lon, location.lat],
+        zoom: 10,
+        essential: true,
+      })
     },
 
     get_date() {
@@ -73,20 +73,37 @@ export default {
     initializeMap() {
       this.map = new maplibregl.Map({
         container: 'map',
-        style:
-          'https://api.maptiler.com/maps/streets-v2/style.json?key=AJPmdudX9yJ2dZbT3iuM',
+        style: 'https://api.maptiler.com/maps/streets-v2/style.json?key=AJPmdudX9yJ2dZbT3iuM',
         center: [2, 48],
-        zoom: 4,
+        zoom: 2,
         minZoom: 2,
-      });
+      })
 
+      for (const [stationName, stationInfo] of Object.entries(this.stationsInfos)) {
+        if (stationInfo.loc) {
+          this.addMarker(stationInfo.loc.lon, stationInfo.loc.lat)
+        }
+      }
+    },
+
+    async fetchAllStationData() {
+      const promises = Object.keys(this.stationsInfos).map((name) => this.fetchDataLive(name))
+      await Promise.all(promises)
+    },
+
+    addMarker(lon, lat) {
+      console.log(lon, lat)
+      new maplibregl.Marker().setLngLat([lon, lat]).addTo(this.map)
     },
 
     async fetchDataLive(station) {
       try {
-        const response = await fetch(`http://piensg0${station}.ensg.eu:3000/live/lat-lon`)
+        const response = await fetch(
+          `http://piensg0${station.split(' ')[1]}.ensg.eu:3000/live/lat-lon`,
+        )
         if (response.ok) {
-          const data = await response.json()
+          const jsonData = await response.json()
+          this.stationsInfos[station].loc = { lon: jsonData.data.lon, lat: jsonData.data.lat }
         } else {
           throw new Error('Failed to fetch data')
         }
@@ -98,17 +115,23 @@ export default {
 }
 </script>
 
-
 <style scoped>
 .box {
   background-color: #eee;
-  padding: 30px;
+  padding: 40px;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.25), 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.1);
+  height: 100vh;
 }
 
-#map {
+#map {
   width: 100%;
   height: 100%;
+  border-radius: 8px;
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.25),
+    0 1px 2px rgba(0, 0, 0, 0.1);
 }
 </style>

@@ -52,16 +52,15 @@ router.get('/', async function (req, res, next) {
         lon: "DD"
       },
       data: {
-        date: truncateToSecond(results[0][4]),
-        temperature: parseFloat(results.find(row => row[7] === "temp")[5]),
-        pressure: parseFloat(results.find(row => row[7] === "press")[5]),
-        humidity: parseFloat(results.find(row => row[7] === "humidity")[5]),
-        luminosity: parseFloat(results.find(row => row[7] === "luminosity")[5]),
-        wind_heading: parseFloat(results.find(row => row[7] === "wind_heading")[5]),
-        wind_speed_avg: parseFloat(results.find(row => row[7] === "wind_speed_avg")[5]),
-        rain: parseFloat(results.find(row => row[7] === "rain")[5]),
-        lat: parseFloat(results.find(row => row[7] === "lat")[5]),
-        lon: parseFloat(results.find(row => row[7] === "lon")[5])
+        temperature: Number(parseFloat(results.find(row => row[7] === "temp")[5]).toFixed(2)),
+        pressure: Number((parseFloat(results.find(row => row[7] === "press")[5]) * 100).toFixed(2)),
+        humidity: Number(parseFloat(results.find(row => row[7] === "humidity")[5]).toFixed(2)),
+        luminosity: Number(parseFloat(results.find(row => row[7] === "luminosity")[5]).toFixed(2)),
+        wind_heading: Number(parseFloat(results.find(row => row[7] === "wind_heading")[5]).toFixed(0)),
+        wind_speed_avg: Number(parseFloat(results.find(row => row[7] === "wind_speed_avg")[5]).toFixed(0)),
+        rain: Number(parseFloat(results.find(row => row[7] === "rain")[5]).toFixed(2)),
+        lat: Number(parseFloat(results.find(row => row[7] === "lat")[5]).toFixed(1)),
+        lon: Number(parseFloat(results.find(row => row[7] === "lon")[5]).toFixed(1))
       }
     };
 
@@ -129,31 +128,31 @@ router.get('/:list_capteur', async function (req, res, next) {
       }
       switch (capteur) {
         case 'temperature':
-          formattedResult.data.temperature = parseFloat(results.find(row => row[7] === "temp")[5]);
+          formattedResult.data.temperature = Number(parseFloat(results.find(row => row[7] === "temp")[5]).toFixed(2));
           break;
         case 'pressure':
-          formattedResult.data.pressure = parseFloat(results.find(row => row[7] === "pressure")[5]);
+          formattedResult.data.pressure = Number(parseFloat(results.find(row => row[7] === "pressure")[5]).toFixed(2));
           break;
         case 'humidity':
-          formattedResult.data.humidity = parseFloat(results.find(row => row[7] === "humidity")[5]);
+          formattedResult.data.humidity = Number(parseFloat(results.find(row => row[7] === "humidity")[5]).toFixed(2));
           break;
         case 'luminosity':
-          formattedResult.data.luminosity = parseFloat(results.find(row => row[7] === "luminosity")[5]);
+          formattedResult.data.luminosity = Number(parseFloat(results.find(row => row[7] === "luminosity")[5]).toFixed(2));
           break;
         case 'wind_heading':
-          formattedResult.data.wind_heading = parseFloat(results.find(row => row[7] === "wind_heading")[5]);
+          formattedResult.data.wind_heading = Number(parseFloat(results.find(row => row[7] === "wind_heading")[5]).toFixed(0));
           break;
         case 'wind_speed_avg':
-          formattedResult.data.wind_speed_avg = parseFloat(results.find(row => row[7] === "wind_speed_avg")[5]);
+          formattedResult.data.wind_speed_avg = Number(parseFloat(results.find(row => row[7] === "wind_speed_avg")[5]).toFixed(0));
           break;
         case 'rain':
-          formattedResult.data.rain = parseFloat(results.find(row => row[7] === "rain")[5]);
+          formattedResult.data.rain = Number(parseFloat(results.find(row => row[7] === "rain")[5]).toFixed(2));
           break;
         case 'lat':
-          formattedResult.data.lat = parseFloat(results.find(row => row[7] === "lat")[5]);
+          formattedResult.data.lat = Number(parseFloat(results.find(row => row[7] === "lat")[5]).toFixed(1));
           break;
         case 'lon':
-          formattedResult.data.lon = parseFloat(results.find(row => row[7] === "lon")[5]);
+          formattedResult.data.lon = Number(parseFloat(results.find(row => row[7] === "lon")[5]).toFixed(1));
           break;
         default:
           break;
