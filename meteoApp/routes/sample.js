@@ -208,6 +208,7 @@ router.get('/:start/now/:list_capteur', async function (req, res, next) {
         const formattedResult = {
             id: 28,
             unit: {},
+            data: {}
         };
 
         const units = {
@@ -231,54 +232,54 @@ router.get('/:start/now/:list_capteur', async function (req, res, next) {
         results.forEach(row => {
             let date = row[4];
             date = truncateToSecond(date);
-            if (!formattedResult[date]) {
-                formattedResult[date] = {};
+            if (!formattedResult.data[date]) {
+                formattedResult.data[date] = {};
             }
             listCapteur.forEach(capteur => {
                 switch (capteur) {
                     case 'temperature':
                         if (row[7] === "temp") {
-                            formattedResult[date].temperature = parseFloat(row[5]);
+                            formattedResult.data[date].temperature = parseFloat(row[5]);
                         }
                         break;
                     case 'pressure':
                         if (row[7] === "pressure") {
-                            formattedResult[date].pressure = parseFloat(row[5]);
+                            formattedResult.data[date].pressure = parseFloat(row[5]);
                         }
                         break;
                     case 'humidity':
                         if (row[7] === "humidity") {
-                            formattedResult[date].humidity = parseFloat(row[5]);
+                            formattedResult.data[date].humidity = parseFloat(row[5]);
                         }
                         break;
                     case 'luminosity':
                         if (row[7] === "luminosity") {
-                            formattedResult[date].luminosity = parseFloat(row[5]);
+                            formattedResult.data[date].luminosity = parseFloat(row[5]);
                         }
                         break;
                     case 'wind_heading':
                         if (row[7] === "wind_heading") {
-                            formattedResult[date].wind_heading = parseFloat(row[5]);
+                            formattedResult.data[date].wind_heading = parseFloat(row[5]);
                         }
                         break;
                     case 'wind_speed_avg':
                         if (row[7] === "wind_speed_avg") {
-                            formattedResult[date].wind_speed_avg = parseFloat(row[5]);
+                            formattedResult.data[date].wind_speed_avg = parseFloat(row[5]);
                         }
                         break;
                     case 'rain':
                         if (row[7] === "rain") {
-                            formattedResult[date].rain = parseFloat(row[5]);
+                            formattedResult.data[date].rain = parseFloat(row[5]);
                         }
                         break;
                     case 'lat':
                         if (row[7] === "lat") {
-                            formattedResult[date].lat = parseFloat(row[5]);
+                            formattedResult.data[date].lat = parseFloat(row[5]);
                         }
                         break;
                     case 'lon':
                         if (row[7] === "lon") {
-                            formattedResult[date].lon = parseFloat(row[5]);
+                            formattedResult.data[date].lon = parseFloat(row[5]);
                         }
                         break;
                     default:
@@ -327,6 +328,7 @@ router.get('/:start/:stop/:list_capteur', async function (req, res, next) {
         const formattedResult = {
             id: 28,
             unit: {},
+            data: {}
         };
 
         const units = {
@@ -350,54 +352,54 @@ router.get('/:start/:stop/:list_capteur', async function (req, res, next) {
         results.forEach(row => {
             let date = row[4];
             date = truncateToSecond(date);
-            if (!formattedResult[date]) {
-                formattedResult[date] = {};
+            if (!formattedResult.data[date]) {
+                formattedResult.data[date] = {};
             }
             listCapteur.forEach(capteur => {
                 switch (capteur) {
                     case 'temperature':
                         if (row[7] === "temp") {
-                            formattedResult[date].temperature = parseFloat(row[5]);
+                            formattedResult.data[date].temperature = parseFloat(row[5]);
                         }
                         break;
                     case 'pressure':
                         if (row[7] === "pressure") {
-                            formattedResult[date].pressure = parseFloat(row[5]);
+                            formattedResult.data[date].pressure = parseFloat(row[5]);
                         }
                         break;
                     case 'humidity':
                         if (row[7] === "humidity") {
-                            formattedResult[date].humidity = parseFloat(row[5]);
+                            formattedResult.data[date].humidity = parseFloat(row[5]);
                         }
                         break;
                     case 'luminosity':
                         if (row[7] === "luminosity") {
-                            formattedResult[date].luminosity = parseFloat(row[5]);
+                            formattedResult.data[date].luminosity = parseFloat(row[5]);
                         }
                         break;
                     case 'wind_heading':
                         if (row[7] === "wind_heading") {
-                            formattedResult[date].wind_heading = parseFloat(row[5]);
+                            formattedResult.data[date].wind_heading = parseFloat(row[5]);
                         }
                         break;
                     case 'wind_speed_avg':
                         if (row[7] === "wind_speed_avg") {
-                            formattedResult[date].wind_speed_avg = parseFloat(row[5]);
+                            formattedResult.data[date].wind_speed_avg = parseFloat(row[5]);
                         }
                         break;
                     case 'rain':
                         if (row[7] === "rain") {
-                            formattedResult[date].rain = parseFloat(row[5]);
+                            formattedResult.data[date].rain = parseFloat(row[5]);
                         }
                         break;
                     case 'lat':
                         if (row[7] === "lat") {
-                            formattedResult[date].lat = parseFloat(row[5]);
+                            formattedResult.data[date].lat = parseFloat(row[5]);
                         }
                         break;
                     case 'lon':
                         if (row[7] === "lon") {
-                            formattedResult[date].lon = parseFloat(row[5]);
+                            formattedResult.data[date].lon = parseFloat(row[5]);
                         }
                         break;
                     default:
