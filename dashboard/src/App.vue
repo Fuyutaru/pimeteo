@@ -4,7 +4,7 @@ import Date from '@/components/Date.vue'
 </script>
 
 <template>
-  <Date />
+  <RouterView />
 </template>
 
 <style scoped></style>
