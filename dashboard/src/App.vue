@@ -1,11 +1,11 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
 import Date from '@/components/Date.vue'
-// import MapView from './views/MapView.vue'
+import DataHistoryView from './views/DataHistoryView.vue'
 </script>
 
 <template>
-  <RouterView />
+  <DataHistoryView />
 </template>
 
 <style scoped></style>

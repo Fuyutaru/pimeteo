@@ -34,7 +34,7 @@ export default {
       this.timeRange.stop = 'now';
 
       if (newVal === 'hour') {
-        this.timeRange.start = new Date(today.getTime() - hour);
+        this.timeRange.start = new Date(today.getTime() - 2 * hour);
       }
 
       if (newVal === 'day') {

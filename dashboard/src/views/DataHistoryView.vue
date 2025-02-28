@@ -96,6 +96,8 @@ export default {
       //     url: this.sensorIcon[sensor],
       //   }
       // });
+      console.log(this.sensorList);
+      console.log(this.timerange);
       console.log(this.dataHistory);
     }
   },
