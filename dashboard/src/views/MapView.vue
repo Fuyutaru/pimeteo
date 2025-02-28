@@ -38,12 +38,13 @@ export default {
       stationName: 'Pi 28',
       timestamp: '',
       map: null,
+      markers: [],
     }
   },
   async mounted() {
-    await this.fetchAllStationData()
-    this.initializeMap()
-    this.get_date()
+    await this.fetchAllStationData();
+    this.initializeMap();
+    this.get_date();
   },
   watch: {
     timestamp(newVal) {
@@ -79,11 +80,26 @@ export default {
         minZoom: 2,
       })
 
-      for (const [stationName, stationInfo] of Object.entries(this.stationsInfos)) {
-        if (stationInfo.loc) {
-          this.addMarker(stationInfo.loc.lon, stationInfo.loc.lat)
+      console.log(this.stationsInfos);
+      console.log("-------------------------")
+      for (let val of Object.values(this.stationsInfos)) {
+        let location = val.loc;
+        if (location) {
+          if (-180 <= location.lon && location.lon <= 180 && -90 <= location.lat  && location.lat <= 90) {
+            this.addMarker(location.lon, location.lat);
+          }
+          
         }
       }
+
+
+
+      // for (let [stationName, stationInfo] of Object.entries(this.stationsInfos)) {
+      //   console.log("lon",stationInfo.loc.lon, stationInfo.loc.lat)
+      //   if (stationInfo.loc) {
+      //     this.addMarker(stationInfo.loc.lon, stationInfo.loc.lat);
+      //   }
+      // }
     },
 
     async fetchAllStationData() {
@@ -93,7 +109,8 @@ export default {
 
     addMarker(lon, lat) {
       console.log(lon, lat)
-      new maplibregl.Marker().setLngLat([lon, lat]).addTo(this.map)
+      this.markers.push(new maplibregl.Marker().setLngLat([lon, lat]).addTo(this.map));
+    
     },
 
     async fetchDataLive(station) {
@@ -102,8 +119,8 @@ export default {
           `http://piensg0${station.split(' ')[1]}.ensg.eu:3000/live/lat-lon`,
         )
         if (response.ok) {
-          const jsonData = await response.json()
-          this.stationsInfos[station].loc = { lon: jsonData.data.lon, lat: jsonData.data.lat }
+          const jsonData = await response.json();
+          this.stationsInfos[station].loc = { 'lon': jsonData.data.lon, 'lat': jsonData.data.lat }
         } else {
           throw new Error('Failed to fetch data')
         }
