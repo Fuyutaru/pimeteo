@@ -32,6 +32,7 @@ import MenuApp from '@/components/MenuApp.vue'
 import MenuDate from '@/components/MenuDate.vue'
 import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
 import { useSensorIcons } from '@/components/composables/iconSensor.js'
+import { useSensorNames } from '@/components/composables/nameSensor'
 
 export default {
   components: {
@@ -50,15 +51,6 @@ export default {
       timerange: { start: '', stop: '' },
       location: { lon: 0, lat: 0 },
       stationName: 'Pi 28',
-      sensorName: {
-        rain: 'Precipitation',
-        temperature: 'Temperature',
-        humidity: 'Humidity',
-        pressure: 'Pressure',
-        wind_speed_avg: 'Wind Speed',
-        wind_heading: 'Wind Heading',
-        luminosity: 'Luminosity',
-      },
     }
   },
   mounted() {
@@ -77,12 +69,13 @@ export default {
       // console.log(this.dataHistory.data[0])
       // }
       const labels = Object.keys(this.dataHistory.data)
+      const names = useSensorNames()
 
       this.sensorData = this.sensorList
         .filter((e) => e !== 'lat-lon')
         .map((sensor) => {
           return {
-            name: this.sensorName[sensor],
+            name: names[sensor],
             dates: labels,
             unit: this.dataHistory.unit[sensor],
             // val: labels.map((label) => this.dataHistory.data[label][sensor]),
@@ -94,7 +87,7 @@ export default {
   methods: {
     maj_sensor(sensorSelected) {
       if (sensorSelected.includes('all')) {
-        this.sensorList = Object.keys(this.sensorName)
+        this.sensorList = Object.keys(useSensorNames())
         this.sensorList.push('lat-lon')
       } else {
         this.sensorList = sensorSelected.filter((e) => e !== 'location' && e !== 'all')

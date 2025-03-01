@@ -21,14 +21,9 @@
 import HeaderApp from '@/components/HeaderApp.vue'
 import MenuApp from '@/components/MenuApp.vue'
 import DataLiveBoard from '@/components/DataLiveBoard.vue'
-import TemperatureIcon from '@/assets/temperature.png'
 import InfoStation from '@/components/InfoStation.vue'
-import LumIcon from '@/assets/luminosity.png'
-import HumIcon from '@/assets/humidity.png'
-import PrecipIcon from '@/assets/precipitation.png'
-import HeadIcon from '@/assets/wind_head.png'
-import SpeedIcon from '@/assets/wind_speed.png'
-import PressIcon from '@/assets/pressure.png'
+import { useSensorIcons } from '@/components/composables/iconSensor'
+import { useSensorNames } from '@/components/composables/nameSensor'
 
 export default {
   components: {
@@ -45,24 +40,6 @@ export default {
       timestamp: '',
       location: { lon: 0, lat: 0 },
       stationName: 'Pi 28',
-      sensorName: {
-        rain: 'Precipitation',
-        temperature: 'Temperature',
-        humidity: 'Humidity',
-        pressure: 'Pressure',
-        wind_speed_avg: 'Wind Speed',
-        wind_heading: 'Wind Heading',
-        luminosity: 'Luminosity',
-      },
-      sensorIcon: {
-        rain: PrecipIcon,
-        temperature: TemperatureIcon,
-        humidity: HumIcon,
-        pressure: PressIcon,
-        wind_speed_avg: SpeedIcon,
-        wind_heading: HeadIcon,
-        luminosity: LumIcon,
-      },
     }
   },
   mounted() {
@@ -79,13 +56,14 @@ export default {
       if (this.sensorList.includes('lat-lon')) {
         this.location = { lon: this.dataLive.data.lon, lat: this.dataLive.data.lat }
       }
+      const names = useSensorNames()
       this.sensorData = this.sensorList
         .filter((e) => e !== 'lat-lon')
         .map((sensor) => {
           return {
-            name: this.sensorName[sensor],
+            name: names[sensor],
             val: `${this.dataLive.data[sensor]} ${this.dataLive.unit[sensor]}`,
-            url: this.sensorIcon[sensor],
+            url: useSensorIcons(sensor),
           }
         })
     },
@@ -93,7 +71,7 @@ export default {
   methods: {
     maj_sensor(sensorSelected) {
       if (sensorSelected.includes('all')) {
-        this.sensorList = Object.keys(this.sensorName)
+        this.sensorList = Object.keys(useSensorNames())
         this.sensorList.push('lat-lon')
       } else {
         this.sensorList = sensorSelected.filter((e) => e !== 'location' && e !== 'all')
@@ -119,7 +97,8 @@ export default {
     async fetchDataLive() {
       try {
         const response = await fetch(
-          `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live/${this.sensorList.join('-')}`,
+          // `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live/${this.sensorList.join('-')}`,
+          './live2.json',
         )
         if (response.ok) {
           this.dataLive = await response.json()
