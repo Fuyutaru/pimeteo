@@ -9,14 +9,7 @@
     <div class="row">
       <div class="col-2">
         <MenuApp @updateSensor="maj_sensor" />
-        <div v-if="sensorList.length !== 0">
-          <MenuDate @updateTimeRange="maj_timeRange" />
-        </div>
-        <div v-else>
-          <div class="alert alert-warning d-flex align-items-center mt-4" role="alert">
-            Please select at least one sensor
-          </div>
-        </div>
+        <MenuDate @updateTimeRange="maj_timeRange" />
       </div>
       <div class="col-10">
         <DataHistoryBoard :sensorData="sensorData" :location="location" />
@@ -100,7 +93,6 @@ export default {
       if (sensorSelected.includes('location')) {
         this.sensorList.push('lat-lon')
       }
-      this.fetchDataLive()
     },
 
     maj_station(newStationName) {
