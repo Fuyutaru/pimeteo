@@ -64,10 +64,6 @@ export default {
       }
     },
     dataHistory() {
-      // if (this.sensorList.includes('lat-lon')) {
-      // this.location = { lon: this.dataHistory.data[0].lon, lat: this.dataHistory.data[1].lat }
-      // console.log(this.dataHistory.data[0])
-      // }
       const labels = Object.keys(this.dataHistory.data)
       const names = useSensorNames()
 
@@ -78,10 +74,18 @@ export default {
             name: names[sensor],
             dates: labels,
             unit: this.dataHistory.unit[sensor],
-            // val: labels.map((label) => this.dataHistory.data[label][sensor]),
+            val: labels.map((date) => this.dataHistory.data[date][sensor]),
             url: useSensorIcons(sensor),
           }
         })
+
+      if (this.sensorList.includes('lat-lon')) {
+        this.location = {
+          lon: this.dataHistory.data[labels[0]].lon,
+          lat: this.dataHistory.data[labels[0]].lat,
+        }
+        console.log(this.location)
+      }
     },
   },
   methods: {
