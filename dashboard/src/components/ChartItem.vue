@@ -28,15 +28,16 @@ export default {
   },
   mounted() {
     this.drawChart()
+    console.log(this.sensorData.dates)
+    console.log(this.sensorData.val)
   },
   methods: {
     drawChart() {
-      console.log(this.sensorData.val.length)
       const ctx = document.getElementById(this.sensorData.name)
       new Chart(ctx, {
         type: 'line',
         data: {
-          labels: this.getTimeLabel(),
+          labels: this.sensorData.dates,
           datasets: [
             {
               label: this.sensorData.name,
@@ -53,7 +54,7 @@ export default {
               title: {
                 display: true,
                 align: 'center',
-                text: `en ${this.sensorData.unit}`,
+                text: `${this.sensorData.unit}`,
               },
               beginAtZero: false,
             },

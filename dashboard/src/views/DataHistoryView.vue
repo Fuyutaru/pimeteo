@@ -10,6 +10,9 @@
       <div class="col-2">
         <MenuApp @updateSensor="maj_sensor" />
         <MenuDate @updateTimeRange="maj_timeRange" />
+        <div class="d-flex justify-content-center my-2">
+          <button type="button" class="btn btn-success" @click="validate">See Results</button>
+        </div>
       </div>
       <div class="col-10">
         <DataHistoryBoard :sensorData="sensorData" :location="location" />
@@ -26,6 +29,7 @@ import MenuDate from '@/components/MenuDate.vue'
 import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
 import { useSensorIcons } from '@/components/composables/iconSensor.js'
 import { useSensorNames } from '@/components/composables/nameSensor'
+import { useAggregateHour, useAggregateMinute } from '@/components/composables/aggregateData'
 
 export default {
   components: {
@@ -58,16 +62,21 @@ export default {
     },
     dataHistory() {
       const labels = Object.keys(this.dataHistory.data)
+
       const names = useSensorNames()
 
       this.sensorData = this.sensorList
         .filter((e) => e !== 'lat-lon')
         .map((sensor) => {
+          let values = labels.map((date) => this.dataHistory.data[date][sensor])
+          let agreg = useAggregateMinute(labels, values)
           return {
             name: names[sensor],
-            dates: labels,
+            // dates: labels,
+            dates: agreg.map((e) => e.date),
             unit: this.dataHistory.unit[sensor],
-            val: labels.map((date) => this.dataHistory.data[date][sensor]),
+            // val: labels.map((date) => this.dataHistory.data[date][sensor]),
+            val: agreg.map((e) => e.value),
             url: useSensorIcons(sensor),
           }
         })
@@ -77,7 +86,6 @@ export default {
           lon: this.dataHistory.data[labels[0]].lon,
           lat: this.dataHistory.data[labels[0]].lat,
         }
-        console.log(this.location)
       }
     },
   },
@@ -88,7 +96,6 @@ export default {
         this.sensorList.push('lat-lon')
       } else {
         this.sensorList = sensorSelected.filter((e) => e !== 'location' && e !== 'all')
-        this.location = { lon: 0, lat: 0 }
       }
       if (sensorSelected.includes('location')) {
         this.sensorList.push('lat-lon')
@@ -100,8 +107,22 @@ export default {
     },
 
     maj_timeRange(newTimerange) {
-      this.timerange = newTimerange
-      this.fetchDataLive()
+      if (this.sensorList.length === 0) {
+        alert('Choose at least one sensor please')
+      } else {
+        this.timerange = newTimerange
+      }
+    },
+    validate() {
+      if (
+        (this.timerange.start !== '' && this.timerange.stop != '') ||
+        this.sensorList.length !== 0
+      ) {
+        console.log(this.timerange)
+        this.fetchDataLive()
+      } else {
+        alert('Choose sensor(s) and a timerange please')
+      }
     },
 
     get_date() {

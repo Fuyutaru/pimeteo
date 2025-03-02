@@ -38,7 +38,7 @@ export default {
     <h2>Sensors</h2>
 
     <div class="mt-3">
-      <div v-for="(name, val) in sensorName" :key="sensor">
+      <div v-for="(name, val) in sensorName" :key="val">
         <div class="form-check">
           <input
             class="form-check-input"
