@@ -11,7 +11,8 @@
         <MenuApp @updateSensor="maj_sensor" />
       </div>
       <div class="col-10">
-        <DataLiveBoard :sensorData="sensorData" :location="location" />
+        <ErrorStation v-if="error" />
+        <DataLiveBoard v-else :sensorData="sensorData" :location="location" />
       </div>
     </div>
   </div>
@@ -22,6 +23,7 @@ import HeaderApp from '@/components/HeaderApp.vue'
 import MenuApp from '@/components/MenuApp.vue'
 import DataLiveBoard from '@/components/DataLiveBoard.vue'
 import InfoStation from '@/components/InfoStation.vue'
+import ErrorStation from '@/components/ErrorStation.vue'
 import { useSensorIcons } from '@/components/composables/iconSensor'
 import { useSensorNames } from '@/components/composables/nameSensor'
 
@@ -31,6 +33,7 @@ export default {
     InfoStation,
     MenuApp,
     DataLiveBoard,
+    ErrorStation,
   },
   data() {
     return {
@@ -40,6 +43,7 @@ export default {
       timestamp: '',
       location: { lon: 0, lat: 0 },
       stationName: 'Pi 28',
+      error: false,
     }
   },
   mounted() {
@@ -97,15 +101,16 @@ export default {
     async fetchDataLive() {
       try {
         const response = await fetch(
-          // `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live/${this.sensorList.join('-')}`,
-          './live2.json',
+          `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/live/${this.sensorList.join('-')}`,
         )
         if (response.ok) {
+          this.error = false
           this.dataLive = await response.json()
         } else {
           throw new Error('Failed to fetch data')
         }
       } catch (error) {
+        this.error = true
         console.error('Error:', error)
       }
     },
