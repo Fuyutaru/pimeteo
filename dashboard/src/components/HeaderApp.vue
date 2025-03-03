@@ -8,7 +8,7 @@
       alt="Logo"
       width="40%"
       height="5%"
-      title="Découvrez notre logo !"
+      title="Très bon slogan !"
     />
 
     <ul class="nav nav-pills me-5">

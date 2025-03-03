@@ -17,7 +17,7 @@
       >
         Data History
       </button>
-      Station {{ stationName }} | {{ infos[stationName] }}
+      Station {{ stationName }} | <b class="ms-2">{{ infos[stationName] }} </b>
     </div>
     <div class="card-body d-flex flex-row justify-content-between">
       <h5>{{ readableTimestamp() }}</h5>
