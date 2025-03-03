@@ -28,6 +28,12 @@ app.use('/users', usersRouter);
 app.use('/live', liveRouter);
 app.use('/sample', sampleRouter);
 
+
+app.get('*', (req, res) => {
+  res.redirect('/');
+});
+
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
