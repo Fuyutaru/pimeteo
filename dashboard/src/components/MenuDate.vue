@@ -55,7 +55,16 @@
       <div class="input-group input-group-sm mb-5">
         <input type="text" class="form-control" id="cal" />
       </div>
+
     </div>
+    <div v-if="timeRangePicked.length !==0" class="alert alert-primary mb-5 d-flex flex-column" role="alert">
+      <span class="badge rounded-pill text-bg-secondary mb-2">Start date</span>
+      <span>{{ readableStartDate }}</span>
+      <span class="badge rounded-pill text-bg-secondary my-2">Stop date</span>
+      <span>{{ timeRange.stop === 'now' ? 'Maintenant' : readableStopDate }}</span>
+    </div>
+
+    
   </div>
 </template>
 
@@ -71,6 +80,40 @@ export default {
       timeRangePicked: '',
       timeRange: { start: null, stop: null },
     }
+  },
+  computed: {
+    readableStartDate() {
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      }
+      let time = new Date(this.timeRange.start)
+        .toLocaleDateString('fr-FR', options)
+        .replace(/./, (c) => c.toUpperCase())
+        .replace(/,? /, ', ')
+      return time
+    },
+    readableStopDate() {
+      const options = {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: 'numeric',
+        second: 'numeric',
+      }
+      let time = new Date(this.timeRange.stop)
+        .toLocaleDateString('fr-FR', options)
+        .replace(/./, (c) => c.toUpperCase())
+        .replace(/,? /, ', ')
+      return time
+    },
   },
 
   methods: {
@@ -95,7 +138,7 @@ export default {
             timeFormat: 'HH:mm',
             onSelect: ({ date }) => {
               this.timeRange.start = date[0]?.toISOString()
-              this.timeRange.stop = date[1] ? date[1].toISOString() : this.timeRange.start
+              this.timeRange.stop = date[1] ? date[1].toISOString() : "now"
               this.helloTimeRange()
             },
           })
