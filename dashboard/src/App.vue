@@ -1,7 +1,7 @@
 <script setup>
 import { RouterLink, RouterView } from 'vue-router'
-import Date from '@/components/Date.vue'
-// import MapView from './views/MapView.vue'
+import DataHistoryView from './views/DataHistoryView.vue'
+import SensorItemComp from './components/SensorItemComp.vue'
 </script>
 
 <template>

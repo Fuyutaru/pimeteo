@@ -1,45 +1,36 @@
 <template>
   <div class="container">
-      <div class="row mb-4">
-          <div class="col">
-              <HeaderApp @updateStationName="maj_station" />
-              <InfoStation :stationName="stationName" :timestamp="timestamp"/>
-          </div>
+    <div class="row mb-4">
+      <div class="col">
+        <HeaderApp @updateStationName="maj_station" />
+        <InfoStation :stationName="stationName" :timestamp="timestamp" />
       </div>
-      <div class="row">
-          <div class="col-2">
-              <MenuApp @updateSensor="maj_sensor" />
-              <div v-if="sensorList.length !== 0">
-                <MenuDate @updateTimeRange="maj_timeRange"/>
-              </div>
-              <div v-else>
-                <div class="alert alert-warning d-flex align-items-center mt-4" role="alert">
-                    Please select at least one sensor
-                </div>
-              </div>
-              
-          </div>
-          <div class="col-10">
-            <DataHistoryBoard :sensorData="sensorData" :location="location"/>
-          </div>
+    </div>
+    <div class="row">
+      <div class="col-2">
+        <MenuApp @updateSensor="maj_sensor" />
+        <MenuDate @updateTimeRange="maj_timeRange" />
+        <div class="d-flex justify-content-center my-2">
+          <button type="button" class="btn btn-success" @click="validate">See Results</button>
+        </div>
       </div>
+      <div class="col-10">
+        <DataHistoryBoard :sensorData="sensorData" :location="location" />
+      </div>
+    </div>
   </div>
 </template>
-  
+
 <script>
 import HeaderApp from '@/components/HeaderApp.vue'
-import MenuApp from '@/components/MenuApp.vue'
-import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
-import TemperatureIcon from '@/assets/temperature.png'
 import InfoStation from '@/components/InfoStation.vue'
-import LumIcon from '@/assets/luminosity.png'
-import HumIcon from '@/assets/humidity.png'
-import PrecipIcon from '@/assets/precipitation.png'
-import HeadIcon from '@/assets/wind_head.png'
-import SpeedIcon from '@/assets/wind_speed.png'
-import PressIcon from '@/assets/pressure.png'
+import MenuApp from '@/components/MenuApp.vue'
 import MenuDate from '@/components/MenuDate.vue'
-  
+import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
+import { useSensorIcons } from '@/components/composables/iconSensor.js'
+import { useSensorNames } from '@/components/composables/nameSensor'
+import { useAggregateHour, useAggregateMinute } from '@/components/composables/aggregateData'
+
 export default {
   components: {
     HeaderApp,
@@ -53,90 +44,101 @@ export default {
       sensorList: [],
       sensorData: [],
       dataHistory: {},
-      timestamp: "",
-      timerange: {start: '', stop: ''},
-      location: {lon: 0, lat: 0},
-      stationName: "Pi 28",
-      sensorName: {"rain": "Precipitation", 
-                   "temperature": "Temperature", 
-                   "humidity": "Humidity",
-                   "pressure": "Pressure",
-                   "wind_speed_avg": "Wind Speed",
-                   "wind_heading": "Wind Heading",
-                   "luminosity": "Luminosity"
-                  },
-      sensorIcon: {"rain": PrecipIcon, 
-                   "temperature": TemperatureIcon, 
-                   "humidity": HumIcon,
-                   "pressure": PressIcon,
-                   "wind_speed_avg": SpeedIcon,
-                   "wind_heading": HeadIcon,
-                   "luminosity": LumIcon
-                  },
+      timestamp: '',
+      timerange: { start: '', stop: '' },
+      location: { lon: 0, lat: 0 },
+      stationName: 'Pi 28',
     }
   },
-  mounted(){
-    this.get_date();
+  mounted() {
+    this.get_date()
   },
   watch: {
     timestamp(newVal) {
-      const minute = new Date(newVal).getMinutes();
-      if (minute % 10 === 0){
-        console.log("time to fetch");
+      const minute = new Date(newVal).getMinutes()
+      if (minute % 10 === 0) {
+        console.log('time to fetch')
       }
     },
     dataHistory() {
-      // if (this.sensorList.includes('lat-lon')) {
-      //   this.location = {'lon': this.dataHistory.data.lon, 'lat': this.dataHistory.data.lat};
-      // }
-      // this.sensorData = this.sensorList.filter(e => e !== 'lat-lon').map(sensor => {
-      //   return {
-      //     name: this.sensorName[sensor],
-      //     val: `${this.dataHistory.data[sensor]} ${this.dataHistory.unit[sensor]}`,
-      //     url: this.sensorIcon[sensor],
-      //   }
-      // });
-      console.log(this.dataHistory);
-    }
+      const labels = Object.keys(this.dataHistory.data)
+
+      const names = useSensorNames()
+
+      this.sensorData = this.sensorList
+        .filter((e) => e !== 'lat-lon')
+        .map((sensor) => {
+          let values = labels.map((date) => this.dataHistory.data[date][sensor])
+          let agreg = useAggregateMinute(labels, values)
+          return {
+            name: names[sensor],
+            // dates: labels,
+            dates: agreg.map((e) => e.date),
+            unit: this.dataHistory.unit[sensor],
+            // val: labels.map((date) => this.dataHistory.data[date][sensor]),
+            val: agreg.map((e) => e.value),
+            url: useSensorIcons(sensor),
+          }
+        })
+
+      if (this.sensorList.includes('lat-lon')) {
+        this.location = {
+          lon: this.dataHistory.data[labels[0]].lon,
+          lat: this.dataHistory.data[labels[0]].lat,
+        }
+      }
+    },
   },
   methods: {
     maj_sensor(sensorSelected) {
       if (sensorSelected.includes('all')) {
-        this.sensorList = Object.keys(this.sensorName);
-        this.sensorList.push('lat-lon');
-      }
-      else {
-        this.sensorList = sensorSelected.filter(e => e !== 'location' && e !== 'all');
-        this.location = {lon: 0, lat: 0};
+        this.sensorList = Object.keys(useSensorNames())
+        this.sensorList.push('lat-lon')
+      } else {
+        this.sensorList = sensorSelected.filter((e) => e !== 'location' && e !== 'all')
       }
       if (sensorSelected.includes('location')) {
-        this.sensorList.push('lat-lon');
+        this.sensorList.push('lat-lon')
       }
     },
 
-    maj_station(newStationName){
-      this.stationName = newStationName;
+    maj_station(newStationName) {
+      this.stationName = newStationName
     },
 
     maj_timeRange(newTimerange) {
-      this.timerange = newTimerange;
-      this.fetchDataLive();
+      if (this.sensorList.length === 0) {
+        alert('Choose at least one sensor please')
+      } else {
+        this.timerange = newTimerange
+      }
+    },
+    validate() {
+      if (
+        (this.timerange.start !== '' && this.timerange.stop != '') ||
+        this.sensorList.length !== 0
+      ) {
+        console.log(this.timerange)
+        this.fetchDataLive()
+      } else {
+        alert('Choose sensor(s) and a timerange please')
+      }
     },
 
     get_date() {
       setInterval(() => {
-        this.timestamp = new Date().toISOString();
-      }, 1_000);
+        this.timestamp = new Date().toISOString()
+      }, 1_000)
     },
 
     // fetchDataLive() {
-    //   fetch("./live2.json")
-    //     .then(response => response.json())
-    //     .then(json => {
-    //       this.dataHistory=json;
-    //     });
+    //   fetch('./now.json')
+    //     .then((response) => response.json())
+    //     .then((json) => {
+    //       this.dataHistory = json
+    //     })
     // },
-    
+
     async fetchDataLive() {
       try {
         const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`;
@@ -152,13 +154,9 @@ export default {
             throw new Error('Failed to fetch data');
         }
       } catch (error) {
-          console.error('Error:', error); 
+          console.error('Error:', error);
         }
     }
   },
 }
-
 </script>
-
-
-  
