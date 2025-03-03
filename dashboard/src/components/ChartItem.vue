@@ -28,8 +28,7 @@ export default {
   },
   mounted() {
     this.drawChart()
-    console.log(this.sensorData.dates)
-    console.log(this.sensorData.val)
+ 
   },
   methods: {
     drawChart() {

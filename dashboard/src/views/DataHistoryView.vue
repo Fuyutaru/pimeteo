@@ -29,7 +29,7 @@ import MenuDate from '@/components/MenuDate.vue'
 import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
 import { useSensorIcons } from '@/components/composables/iconSensor.js'
 import { useSensorNames } from '@/components/composables/nameSensor'
-import { useAggregateHour, useAggregateMinute } from '@/components/composables/aggregateData'
+import { useAggregateDay, useAggregateHour, useAggregateMinute } from '@/components/composables/aggregateData'
 
 export default {
   components: {
@@ -62,8 +62,14 @@ export default {
     },
     dataHistory() {
       const labels = Object.keys(this.dataHistory.data)
-
       const names = useSensorNames()
+      console.log('-----------------------------------')
+
+      let d = new Date(this.timerange.start);
+      let n = this.timerange.stop === 'now' ? new Date() : new Date(this.timerange.stop);
+      console.log(d)
+      console.log(n)
+      console.log(this.diff2date(d, n))
 
       this.sensorData = this.sensorList
         .filter((e) => e !== 'lat-lon')
@@ -129,6 +135,16 @@ export default {
       setInterval(() => {
         this.timestamp = new Date().toISOString()
       }, 1_000)
+    },
+
+
+    diff2date(startDate, endDate) {
+      const seconds = Math.floor((endDate - startDate) / 1000);
+      const minutes = Math.floor(seconds / 60);
+      const hours = Math.floor(minutes / 60);
+      const days = Math.floor(hours / 24);
+      return days;
+
     },
 
     // fetchDataLive() {
