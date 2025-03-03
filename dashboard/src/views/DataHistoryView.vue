@@ -131,32 +131,32 @@ export default {
       }, 1_000)
     },
 
-    fetchDataLive() {
-      fetch('./now.json')
-        .then((response) => response.json())
-        .then((json) => {
-          this.dataHistory = json
-        })
-    },
+    // fetchDataLive() {
+    //   fetch('./now.json')
+    //     .then((response) => response.json())
+    //     .then((json) => {
+    //       this.dataHistory = json
+    //     })
+    // },
 
-    // async fetchDataLive() {
-    //   try {
-    //     const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`;
-    //     const time = `${this.timerange.start}/${this.timerange.stop}`;
-    //     const sensor = this.sensorList.join('-');
-    //     const route = `${station}/${time}/${sensor}`;
+    async fetchDataLive() {
+      try {
+        const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`;
+        const time = `${this.timerange.start}/${this.timerange.stop}`;
+        const sensor = this.sensorList.join('-');
+        const route = `${station}/${time}/${sensor}`;
 
-    //     const response = await fetch(route);
-    //     if (response.ok) {
-    //       console.log(route)
-    //       this.dataHistory = await response.json();
-    //     } else {
-    //         throw new Error('Failed to fetch data');
-    //     }
-    //   } catch (error) {
-    //       console.error('Error:', error);
-    //     }
-    // }
+        const response = await fetch(route);
+        if (response.ok) {
+          console.log(route)
+          this.dataHistory = await response.json();
+        } else {
+            throw new Error('Failed to fetch data');
+        }
+      } catch (error) {
+          console.error('Error:', error);
+        }
+    }
   },
 }
 </script>
