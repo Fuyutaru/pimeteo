@@ -29,7 +29,11 @@ import MenuDate from '@/components/MenuDate.vue'
 import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
 import { useSensorIcons } from '@/components/composables/iconSensor.js'
 import { useSensorNames } from '@/components/composables/nameSensor'
-import { useAggregateDay, useAggregateHour, useAggregateMinute } from '@/components/composables/aggregateData'
+import {
+  useAggregateDay,
+  useAggregateHour,
+  useAggregateMinute,
+} from '@/components/composables/aggregateData'
 
 export default {
   components: {
@@ -65,8 +69,8 @@ export default {
       const names = useSensorNames()
       console.log('-----------------------------------')
 
-      let d = new Date(this.timerange.start);
-      let n = this.timerange.stop === 'now' ? new Date() : new Date(this.timerange.stop);
+      let d = new Date(this.timerange.start)
+      let n = this.timerange.stop === 'now' ? new Date() : new Date(this.timerange.stop)
       console.log(d)
       console.log(n)
       console.log(this.diff2date(d, n))
@@ -75,7 +79,7 @@ export default {
         .filter((e) => e !== 'lat-lon')
         .map((sensor) => {
           let values = labels.map((date) => this.dataHistory.data[date][sensor])
-          let agreg = useAggregateMinute(labels, values)
+          let agreg = useAggregateHour(labels, values)
           return {
             name: names[sensor],
             // dates: labels,
@@ -137,42 +141,40 @@ export default {
       }, 1_000)
     },
 
-
     diff2date(startDate, endDate) {
-      const seconds = Math.floor((endDate - startDate) / 1000);
-      const minutes = Math.floor(seconds / 60);
-      const hours = Math.floor(minutes / 60);
-      const days = Math.floor(hours / 24);
-      return days;
-
+      const seconds = Math.floor((endDate - startDate) / 1000)
+      const minutes = Math.floor(seconds / 60)
+      const hours = Math.floor(minutes / 60)
+      const days = Math.floor(hours / 24)
+      return { days, hours }
     },
 
-    // fetchDataLive() {
-    //   fetch('./now.json')
-    //     .then((response) => response.json())
-    //     .then((json) => {
-    //       this.dataHistory = json
-    //     })
-    // },
+    fetchDataLive() {
+      fetch('./sampleDD.json')
+        .then((response) => response.json())
+        .then((json) => {
+          this.dataHistory = json
+        })
+    },
 
-    async fetchDataLive() {
-      try {
-        const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`;
-        const time = `${this.timerange.start}/${this.timerange.stop}`;
-        const sensor = this.sensorList.join('-');
-        const route = `${station}/${time}/${sensor}`;
+    // async fetchDataLive() {
+    //   try {
+    //     const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`;
+    //     const time = `${this.timerange.start}/${this.timerange.stop}`;
+    //     const sensor = this.sensorList.join('-');
+    //     const route = `${station}/${time}/${sensor}`;
 
-        const response = await fetch(route);
-        if (response.ok) {
-          console.log(route)
-          this.dataHistory = await response.json();
-        } else {
-            throw new Error('Failed to fetch data');
-        }
-      } catch (error) {
-          console.error('Error:', error);
-        }
-    }
+    //     const response = await fetch(route);
+    //     if (response.ok) {
+    //       console.log(route)
+    //       this.dataHistory = await response.json();
+    //     } else {
+    //         throw new Error('Failed to fetch data');
+    //     }
+    //   } catch (error) {
+    //       console.error('Error:', error);
+    //     }
+    // }
   },
 }
 </script>

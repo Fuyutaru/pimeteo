@@ -4,12 +4,14 @@ export function useAggregateHour(dates, values) {
     dates.forEach((date, index) => {
       const dateTime = new Date(date)
       const hourKey = dateTime.toISOString().substring(0, 13) + ':00:00Z'
-
-      if (!aggregatedData[hourKey]) {
-        aggregatedData[hourKey] = { total: values[index], count: 1 }
-      } else {
-        aggregatedData[hourKey].total += values[index]
-        aggregatedData[hourKey].count++
+      if (values[index]) {
+        if (!aggregatedData[hourKey]) {
+          aggregatedData[hourKey] = { total: values[index], count: 1 }
+        } else {
+  
+          aggregatedData[hourKey].total += values[index] 
+          aggregatedData[hourKey].count++
+        }
       }
     })
 
@@ -27,12 +29,13 @@ export function useAggregateDay(dates, values) {
     dates.forEach((date, index) => {
       const dateTime = new Date(date);
       const dayKey = dateTime.toISOString().substring(0, 10);
-  
-      if (!aggregatedData[dayKey]) {
-        aggregatedData[dayKey] = { total: values[index], count: 1 };
-      } else {
-        aggregatedData[dayKey].total += values[index];
-        aggregatedData[dayKey].count++;
+      if (values[index]) {
+        if (!aggregatedData[dayKey]) {
+          aggregatedData[dayKey] = { total: values[index], count: 1 };
+        } else {
+          aggregatedData[dayKey].total += values[index];
+          aggregatedData[dayKey].count++;
+        }
       }
     });
   
@@ -52,11 +55,13 @@ export function useAggregateMinute(dates, values) {
       const dateTime = new Date(date);
       const minuteKey = dateTime.toISOString().substring(0, 16) + ':00Z';
   
-      if (!aggregatedData[minuteKey]) {
-        aggregatedData[minuteKey] = { total: values[index], count: 1 };
-      } else {
-        aggregatedData[minuteKey].total += values[index];
-        aggregatedData[minuteKey].count++;
+      if (values[index]) {
+        if (!aggregatedData[minuteKey]) {
+          aggregatedData[minuteKey] = { total: values[index], count: 1 };
+        } else {
+          aggregatedData[minuteKey].total += values[index];
+          aggregatedData[minuteKey].count++;
+        }
       }
     });
 

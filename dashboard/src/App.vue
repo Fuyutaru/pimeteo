@@ -5,7 +5,7 @@ import SensorItemComp from './components/SensorItemComp.vue'
 </script>
 
 <template>
-  <RouterView />
+  <DataHistoryView />
 </template>
 
 <style scoped></style>
