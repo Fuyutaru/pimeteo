@@ -65,6 +65,7 @@ export default {
       infos: {
         'Pi 28': 'Vanessa et Zijian',
         'Pi 27': 'Romain et Jiongru',
+        'Pi 29': 'iamvdo et cedricici',
         'Pi 30': 'Loïs et Jean-Baptiste',
         'Pi 31': 'Vincent et Ibrahim',
         'Pi 32': 'Thomas et Antonin',

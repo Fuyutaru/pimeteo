@@ -31,6 +31,14 @@
       <li class="nav-item">
         <a
           class="nav-link"
+          :class="{ active: stationName === 'Pi 29' }"
+          @click="stationCliqued('Pi 29')"
+          >Pi 29</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
           :class="{ active: stationName === 'Pi 30' }"
           @click="stationCliqued('Pi 30')"
           >Pi 30</a
