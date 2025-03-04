@@ -1,8 +1,6 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
-import DataHistoryView from './views/DataHistoryView.vue'
-import SensorItemComp from './components/SensorItemComp.vue'
-import Loader from './components/Loader.vue'
+import { RouterView } from 'vue-router'
+
 </script>
 
 <template>
