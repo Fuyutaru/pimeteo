@@ -9,6 +9,7 @@
       width="40%"
       height="5%"
       title="Très bon slogan !"
+      @click="goHome"
     />
 
     <ul class="nav nav-pills me-5">
@@ -75,6 +76,9 @@ export default {
     stationCliqued(newStationName) {
       this.stationName = newStationName
       this.$emit('updateStationName', this.stationName)
+    },
+    goHome() {
+      this.$router.push({ name: 'home' })
     },
   },
 }
