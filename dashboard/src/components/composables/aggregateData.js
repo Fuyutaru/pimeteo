@@ -1,4 +1,4 @@
-export function useAggregateHour(dates, values) {
+function useAggregateHour(dates, values) {
   const aggregatedData = {}
 
   dates.forEach((date, index) => {
@@ -23,7 +23,7 @@ export function useAggregateHour(dates, values) {
   return result
 }
 
-export function useAggregateDay(dates, values) {
+function useAggregateDay(dates, values) {
   const aggregatedData = {};
 
   dates.forEach((date, index) => {
@@ -39,23 +39,15 @@ export function useAggregateDay(dates, values) {
     }
   });
 
-  console.log(aggregatedData)
-
-
   const result = Object.keys(aggregatedData).map(day => ({
     date: new Date(day).toLocaleDateString('fr-FR', { dateStyle: 'short' }),
     value: aggregatedData[day].total / aggregatedData[day].count
   }));
 
-  console.log('---aggregate day----')
-
-  console.log(result)
-
   return result;
 }
 
-
-export function useAggregateMinute(dates, values) {
+function useAggregateMinute(dates, values) {
   const aggregatedData = {};
 
   dates.forEach((date, index) => {
@@ -93,19 +85,14 @@ export function useAggregate(startDate, endDate, labels, values) {
   let stop = endDate === 'now' ? new Date() : new Date(endDate);
 
   const diff = diff2date(start, stop);
-  if (diff.days === 0) {
+  if (diff.days === 0 && diff.hours > 1) {
     return useAggregateHour(labels, values);
   }
+  if (diff.days === 0 && diff.hours <= 1) {
+    return useAggregateMinute(labels, values);
+  }
   else {
-    console.log("-----use aggreg------")
-    console.log(start, stop)
-    const data = useAggregateDay(labels, values);
-
-
-
-
     return useAggregateDay(labels, values);
-
   }
 
 }

@@ -34,10 +34,7 @@ import Loader from '@/components/Loader.vue'
 import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
 import { useSensorIcons } from '@/components/composables/iconSensor.js'
 import { useSensorNames } from '@/components/composables/nameSensor'
-import {
-  useAggregateHour,
-  useAggregate
-} from '@/components/composables/aggregateData'
+import { useAggregate } from '@/components/composables/aggregateData'
 
 export default {
   components: {
@@ -73,21 +70,17 @@ export default {
     dataHistory() {
       const labels = Object.keys(this.dataHistory.data)
       const names = useSensorNames()
-      console.log('-----------------------------------')
-
 
       this.sensorData = this.sensorList
         .filter((e) => e !== 'lat-lon')
         .map((sensor) => {
           let values = labels.map((date) => this.dataHistory.data[date][sensor])
           let agreg = useAggregate(this.timerange.start, this.timerange.stop, labels, values)
-          console.log(agreg)
+
           return {
             name: names[sensor],
-            // dates: labels,
             dates: agreg.map((e) => e.date),
             unit: this.dataHistory.unit[sensor],
-            // val: labels.map((date) => this.dataHistory.data[date][sensor]),
             val: agreg.map((e) => e.value),
             url: useSensorIcons(sensor),
           }
@@ -152,14 +145,6 @@ export default {
       const days = Math.floor(hours / 24)
       return { days, hours }
     },
-
-    // fetchDataLive() {
-    //   fetch('./sampleDD.json')
-    //     .then((response) => response.json())
-    //     .then((json) => {
-    //       this.dataHistory = json
-    //     })
-    // },
 
     async fetchDataLive() {
       this.loading = true;

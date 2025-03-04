@@ -72,6 +72,7 @@
 import AirDatepicker from 'air-datepicker'
 import 'air-datepicker/air-datepicker.css'
 import localeEn from 'air-datepicker/locale/en'
+import { useReadableDate } from './composables/readableDate'
 
 export default {
   data() {
@@ -83,36 +84,10 @@ export default {
   },
   computed: {
     readableStartDate() {
-      const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-      }
-      let time = new Date(this.timeRange.start)
-        .toLocaleDateString('fr-FR', options)
-        .replace(/./, (c) => c.toUpperCase())
-        .replace(/,? /, ', ')
-      return time
+      return useReadableDate(this.timeRange.start)
     },
     readableStopDate() {
-      const options = {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: 'numeric',
-        minute: 'numeric',
-        second: 'numeric',
-      }
-      let time = new Date(this.timeRange.stop)
-        .toLocaleDateString('fr-FR', options)
-        .replace(/./, (c) => c.toUpperCase())
-        .replace(/,? /, ', ')
-      return time
+      return useReadableDate(this.timeRange.stop)
     },
   },
 
