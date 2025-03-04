@@ -5,7 +5,7 @@
 ![Express.js](https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB)
 ![InfluxDB](https://img.shields.io/badge/InfluxDB-22ADF6?style=for-the-badge&logo=InfluxDB&logoColor=white)
 
-Le but du projet est de réaliser la partie Software d'une station météo composé de sondes et d'une centrale en utilisant exclusivement des technologies web et des raspberry Pi (miam!)
+Le but de ce projet est de réaliser la partie Software d'une station météo composé de sondes et d'une centrale en utilisant exclusivement des technologies web et des raspberry Pi (miam!)
 
 # 🚀 Démarrage 🚀
 
@@ -13,7 +13,7 @@ Il faut que vous soyez sur un ordi de l'école et que les raspberrys soient bien
 
 # 🤔 Guide utilisateur 🤔
 
-Vous avez accès à trois vues :
+Trois vues sont disponibles dans ce dashboard:
 
 - Live, présentant toutes les dernières données disponible pour une sonde.
 - History, présentant l'historique des données pour une sonde sur une période donnée.
@@ -32,7 +32,7 @@ Pour naviguer entre les différentes vues, cliquez sur les boutons associés sit
 
 2. Choissisez ensuite une période donnée en cliquant sur les radios ou en selectionnant une date personnalisée en cliquant sur l'input associé :
 
-   - Dans le calendrier qui s'affiche, vous pouvez sélectionner une période donnée ou un seul jour en cliquant une seul fois sur le jour souhaité et une horaire donnée en faisant glisser les sliders en bas du calendrier, cela affichera les données depuis ce jour jusqu'à maintenant.
+   - Dans le calendrier qui s'affiche, vous pouvez sélectionner une période donnée ou un seul jour en cliquant une seule fois sur le jour souhaité et un horaire donné en faisant glisser les sliders en bas du calendrier, cela affichera les données depuis ce jour jusqu'à maintenant.
 
    - La période que vous aurez séléctionnée s'affiche dans le menu, une fois satisfait, cliquez sur le bouton vert See Results, pour voir les résultats.
 
@@ -42,4 +42,4 @@ Les données de notre station peuvent prendre du temps à charger, pendant ce te
 
 ## 🗺️ Map
 
-Dans cette vue, vous pouvez voir l'emplacement des stations météo, si vous cliquez sur les boutons des stations situés dans le header, cela vous centrera la carte sur la station que vous avez sélectionné.
+Dans cette vue, vous pouvez voir l'emplacement des stations météo, si vous cliquez sur les boutons des stations situés dans le header, cela vous centrera la carte sur la station que vous avez sélectionnée.
