@@ -58,6 +58,7 @@ export default {
       location: { lon: 0, lat: 0 },
       stationName: 'Pi 28',
       loading: false,
+      error: false,
     }
   },
   mounted() {
@@ -160,11 +161,14 @@ export default {
         if (response.ok) {
           console.log(route)
           this.dataHistory = await response.json()
+          this.error = false
           this.loading = false
         } else {
           throw new Error('Failed to fetch data')
         }
       } catch (error) {
+        this.error = true
+        this.loading = false
         console.error('Error:', error)
       }
     },
