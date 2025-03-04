@@ -15,11 +15,12 @@
         </div>
       </div>
       <div class="col-10">
-      <div v-if="loading" class="m-4 d-flex justify-content-center align-items-center">
-        <Loader /> 
-        <h2 class="ms-5">Veuillez patienter...</h2>
-      </div>
-        <DataHistoryBoard :sensorData="sensorData" :location="location" />
+        <div v-if="loading" class="m-4 d-flex justify-content-center align-items-center">
+          <LoaderBoussole />
+          <h2 class="ms-5">Veuillez patienter...</h2>
+        </div>
+        <ErrorStation v-if="error" />
+        <DataHistoryBoard v-else :sensorData="sensorData" :location="location" />
       </div>
     </div>
   </div>
@@ -30,7 +31,8 @@ import HeaderApp from '@/components/HeaderApp.vue'
 import InfoStation from '@/components/InfoStation.vue'
 import MenuApp from '@/components/MenuApp.vue'
 import MenuDate from '@/components/MenuDate.vue'
-import Loader from '@/components/LoaderBoussole.vue'
+import LoaderBoussole from '@/components/LoaderBoussole.vue'
+import ErrorStation from '@/components/ErrorStation.vue'
 import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
 import { useSensorIcons } from '@/components/composables/iconSensor.js'
 import { useSensorNames } from '@/components/composables/nameSensor'
@@ -43,7 +45,8 @@ export default {
     MenuApp,
     MenuDate,
     DataHistoryBoard,
-    Loader,
+    ErrorStation,
+    LoaderBoussole,
   },
   data() {
     return {
@@ -54,7 +57,8 @@ export default {
       timerange: { start: '', stop: '' },
       location: { lon: 0, lat: 0 },
       stationName: 'Pi 28',
-      loading:false,
+      loading: false,
+      error: false,
     }
   },
   mounted() {
@@ -124,9 +128,8 @@ export default {
         this.sensorList.length !== 0
       ) {
         console.log(this.timerange)
-        
-        this.fetchDataLive();
-    
+
+        this.fetchDataLive()
       } else {
         alert('Choose sensor(s) and a timerange please')
       }
@@ -147,25 +150,28 @@ export default {
     },
 
     async fetchDataLive() {
-      this.loading = true;
+      this.loading = true
       try {
-        const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`;
-        const time = `${this.timerange.start}/${this.timerange.stop}`;
-        const sensor = this.sensorList.join('-');
-        const route = `${station}/${time}/${sensor}`;
+        const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`
+        const time = `${this.timerange.start}/${this.timerange.stop}`
+        const sensor = this.sensorList.join('-')
+        const route = `${station}/${time}/${sensor}`
 
-        const response = await fetch(route);
+        const response = await fetch(route)
         if (response.ok) {
           console.log(route)
-          this.dataHistory = await response.json();
-          this.loading = false;
+          this.dataHistory = await response.json()
+          this.error = false
+          this.loading = false
         } else {
-            throw new Error('Failed to fetch data');
+          throw new Error('Failed to fetch data')
         }
       } catch (error) {
-          console.error('Error:', error);
-        }
-    }
+        this.error = true
+        this.loading = false
+        console.error('Error:', error)
+      }
+    },
   },
 }
 </script>
