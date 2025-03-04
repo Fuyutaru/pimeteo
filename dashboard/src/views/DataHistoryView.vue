@@ -15,6 +15,10 @@
         </div>
       </div>
       <div class="col-10">
+      <div v-if="loading" class="m-4 d-flex justify-content-center align-items-center">
+        <Loader /> 
+        <h2 class="ms-5">Veuillez patienter...</h2>
+      </div>
         <DataHistoryBoard :sensorData="sensorData" :location="location" />
       </div>
     </div>
@@ -26,13 +30,13 @@ import HeaderApp from '@/components/HeaderApp.vue'
 import InfoStation from '@/components/InfoStation.vue'
 import MenuApp from '@/components/MenuApp.vue'
 import MenuDate from '@/components/MenuDate.vue'
+import Loader from '@/components/Loader.vue'
 import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
 import { useSensorIcons } from '@/components/composables/iconSensor.js'
 import { useSensorNames } from '@/components/composables/nameSensor'
 import {
-  useAggregateDay,
   useAggregateHour,
-  useAggregateMinute,
+  useAggregate
 } from '@/components/composables/aggregateData'
 
 export default {
@@ -42,6 +46,7 @@ export default {
     MenuApp,
     MenuDate,
     DataHistoryBoard,
+    Loader,
   },
   data() {
     return {
@@ -52,6 +57,7 @@ export default {
       timerange: { start: '', stop: '' },
       location: { lon: 0, lat: 0 },
       stationName: 'Pi 28',
+      loading:false,
     }
   },
   mounted() {
@@ -69,17 +75,13 @@ export default {
       const names = useSensorNames()
       console.log('-----------------------------------')
 
-      let d = new Date(this.timerange.start)
-      let n = this.timerange.stop === 'now' ? new Date() : new Date(this.timerange.stop)
-      console.log(d)
-      console.log(n)
-      console.log(this.diff2date(d, n))
 
       this.sensorData = this.sensorList
         .filter((e) => e !== 'lat-lon')
         .map((sensor) => {
           let values = labels.map((date) => this.dataHistory.data[date][sensor])
-          let agreg = useAggregateHour(labels, values)
+          let agreg = useAggregate(this.timerange.start, this.timerange.stop, labels, values)
+          console.log(agreg)
           return {
             name: names[sensor],
             // dates: labels,
@@ -129,7 +131,9 @@ export default {
         this.sensorList.length !== 0
       ) {
         console.log(this.timerange)
-        this.fetchDataLive()
+        
+        this.fetchDataLive();
+    
       } else {
         alert('Choose sensor(s) and a timerange please')
       }
@@ -149,32 +153,34 @@ export default {
       return { days, hours }
     },
 
-    fetchDataLive() {
-      fetch('./sampleDD.json')
-        .then((response) => response.json())
-        .then((json) => {
-          this.dataHistory = json
-        })
-    },
+    // fetchDataLive() {
+    //   fetch('./sampleDD.json')
+    //     .then((response) => response.json())
+    //     .then((json) => {
+    //       this.dataHistory = json
+    //     })
+    // },
 
-    // async fetchDataLive() {
-    //   try {
-    //     const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`;
-    //     const time = `${this.timerange.start}/${this.timerange.stop}`;
-    //     const sensor = this.sensorList.join('-');
-    //     const route = `${station}/${time}/${sensor}`;
+    async fetchDataLive() {
+      this.loading = true;
+      try {
+        const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`;
+        const time = `${this.timerange.start}/${this.timerange.stop}`;
+        const sensor = this.sensorList.join('-');
+        const route = `${station}/${time}/${sensor}`;
 
-    //     const response = await fetch(route);
-    //     if (response.ok) {
-    //       console.log(route)
-    //       this.dataHistory = await response.json();
-    //     } else {
-    //         throw new Error('Failed to fetch data');
-    //     }
-    //   } catch (error) {
-    //       console.error('Error:', error);
-    //     }
-    // }
+        const response = await fetch(route);
+        if (response.ok) {
+          console.log(route)
+          this.dataHistory = await response.json();
+          this.loading = false;
+        } else {
+            throw new Error('Failed to fetch data');
+        }
+      } catch (error) {
+          console.error('Error:', error);
+        }
+    }
   },
 }
 </script>

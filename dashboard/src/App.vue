@@ -6,7 +6,7 @@ import Loader from './components/Loader.vue'
 </script>
 
 <template>
-  <Loader />
+  <RouterView />
 </template>
 
 <style scoped></style>
