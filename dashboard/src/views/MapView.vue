@@ -31,6 +31,7 @@ export default {
       stationsInfos: {
         'Pi 28': { name: 'Vanessa et Zijian', loc: null },
         'Pi 27': { name: 'Romain et Jiongru', loc: null },
+        'Pi 29': { name: 'iamvdo et cedricici', loc: {lon: 2.5871930932709, lat: 48.84105713049722}},
         'Pi 30': { name: 'Loïs et Jean-Baptiste', loc: null },
         'Pi 31': { name: 'Vincent et Ibrahim', loc: null },
         'Pi 32': { name: 'Thomas et Antonin', loc: null },

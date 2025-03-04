@@ -15,6 +15,10 @@
         </div>
       </div>
       <div class="col-10">
+      <div v-if="loading" class="m-4 d-flex justify-content-center align-items-center">
+        <Loader /> 
+        <h2 class="ms-5">Veuillez patienter...</h2>
+      </div>
         <DataHistoryBoard :sensorData="sensorData" :location="location" />
       </div>
     </div>
@@ -26,10 +30,11 @@ import HeaderApp from '@/components/HeaderApp.vue'
 import InfoStation from '@/components/InfoStation.vue'
 import MenuApp from '@/components/MenuApp.vue'
 import MenuDate from '@/components/MenuDate.vue'
+import Loader from '@/components/LoaderBoussole.vue'
 import DataHistoryBoard from '@/components/DataHistoryBoard.vue'
 import { useSensorIcons } from '@/components/composables/iconSensor.js'
 import { useSensorNames } from '@/components/composables/nameSensor'
-import { useAggregateHour, useAggregateMinute } from '@/components/composables/aggregateData'
+import { useAggregate } from '@/components/composables/aggregateData'
 
 export default {
   components: {
@@ -38,6 +43,7 @@ export default {
     MenuApp,
     MenuDate,
     DataHistoryBoard,
+    Loader,
   },
   data() {
     return {
@@ -48,6 +54,7 @@ export default {
       timerange: { start: '', stop: '' },
       location: { lon: 0, lat: 0 },
       stationName: 'Pi 28',
+      loading:false,
     }
   },
   mounted() {
@@ -62,20 +69,18 @@ export default {
     },
     dataHistory() {
       const labels = Object.keys(this.dataHistory.data)
-
       const names = useSensorNames()
 
       this.sensorData = this.sensorList
         .filter((e) => e !== 'lat-lon')
         .map((sensor) => {
           let values = labels.map((date) => this.dataHistory.data[date][sensor])
-          let agreg = useAggregateMinute(labels, values)
+          let agreg = useAggregate(this.timerange.start, this.timerange.stop, labels, values)
+
           return {
             name: names[sensor],
-            // dates: labels,
             dates: agreg.map((e) => e.date),
             unit: this.dataHistory.unit[sensor],
-            // val: labels.map((date) => this.dataHistory.data[date][sensor]),
             val: agreg.map((e) => e.value),
             url: useSensorIcons(sensor),
           }
@@ -119,7 +124,9 @@ export default {
         this.sensorList.length !== 0
       ) {
         console.log(this.timerange)
-        this.fetchDataLive()
+        
+        this.fetchDataLive();
+    
       } else {
         alert('Choose sensor(s) and a timerange please')
       }
@@ -131,15 +138,16 @@ export default {
       }, 1_000)
     },
 
-    // fetchDataLive() {
-    //   fetch('./now.json')
-    //     .then((response) => response.json())
-    //     .then((json) => {
-    //       this.dataHistory = json
-    //     })
-    // },
+    diff2date(startDate, endDate) {
+      const seconds = Math.floor((endDate - startDate) / 1000)
+      const minutes = Math.floor(seconds / 60)
+      const hours = Math.floor(minutes / 60)
+      const days = Math.floor(hours / 24)
+      return { days, hours }
+    },
 
     async fetchDataLive() {
+      this.loading = true;
       try {
         const station = `http://piensg0${this.stationName.split(' ')[1]}.ensg.eu:3000/sample`;
         const time = `${this.timerange.start}/${this.timerange.stop}`;
@@ -150,6 +158,7 @@ export default {
         if (response.ok) {
           console.log(route)
           this.dataHistory = await response.json();
+          this.loading = false;
         } else {
             throw new Error('Failed to fetch data');
         }

@@ -8,7 +8,7 @@
       alt="Logo"
       width="40%"
       height="5%"
-      title="Découvrez notre logo !"
+      title="Très bon slogan !"
     />
 
     <ul class="nav nav-pills me-5">
@@ -26,6 +26,14 @@
           :class="{ active: stationName === 'Pi 27' }"
           @click="stationCliqued('Pi 27')"
           >Pi 27</a
+        >
+      </li>
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          :class="{ active: stationName === 'Pi 29' }"
+          @click="stationCliqued('Pi 29')"
+          >Pi 29</a
         >
       </li>
       <li class="nav-item">
