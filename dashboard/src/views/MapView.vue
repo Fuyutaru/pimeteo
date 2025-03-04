@@ -84,7 +84,7 @@ export default {
         minZoom: 2,
       })
 
-      for (let val of Object.values(this.stationsInfos)) {
+      for (let [key, val] of Object.entries(this.stationsInfos)) {
         let location = val.loc
         if (location) {
           if (
@@ -93,7 +93,7 @@ export default {
             -90 <= location.lat &&
             location.lat <= 90
           ) {
-            this.addMarker(location.lon, location.lat)
+            this.addMarker(location.lon, location.lat, `Station ${key} : ${val.name}`)
           }
         }
       }
@@ -104,9 +104,11 @@ export default {
       await Promise.all(promises)
     },
 
-    addMarker(lon, lat) {
-      console.log(lon, lat)
-      this.markers.push(new maplibregl.Marker().setLngLat([lon, lat]).addTo(this.map))
+    addMarker(lon, lat, txt) {
+      const popup = new maplibregl.Popup({ offset: 25 }).setText(txt)
+      this.markers.push(
+        new maplibregl.Marker().setLngLat([lon, lat]).setPopup(popup).addTo(this.map),
+      )
     },
 
     async fetchDataLive(station) {
