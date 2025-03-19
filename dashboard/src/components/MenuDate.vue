@@ -55,16 +55,17 @@
       <div class="input-group input-group-sm mb-5">
         <input type="text" class="form-control" id="cal" />
       </div>
-
     </div>
-    <div v-if="timeRangePicked.length !==0" class="alert alert-primary mb-5 d-flex flex-column" role="alert">
+    <div
+      v-if="timeRangePicked.length !== 0"
+      class="alert alert-primary mb-5 d-flex flex-column"
+      role="alert"
+    >
       <span class="badge rounded-pill text-bg-secondary mb-2">Start date</span>
       <span>{{ readableStartDate }}</span>
       <span class="badge rounded-pill text-bg-secondary my-2">Stop date</span>
       <span>{{ timeRange.stop === 'now' ? 'Maintenant' : readableStopDate }}</span>
     </div>
-
-    
   </div>
 </template>
 
@@ -109,11 +110,11 @@ export default {
             timepicker: true,
             locale: localeEn,
             maxDate: new Date(),
-            minDate: new Date('2025-02-14'),
+            minDate: new Date('2025-03-03'),
             timeFormat: 'HH:mm',
             onSelect: ({ date }) => {
               this.timeRange.start = date[0]?.toISOString()
-              this.timeRange.stop = date[1] ? date[1].toISOString() : "now"
+              this.timeRange.stop = date[1] ? date[1].toISOString() : 'now'
               this.helloTimeRange()
             },
           })
